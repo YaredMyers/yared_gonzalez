@@ -14,7 +14,6 @@ client("", "")
     console.log("OK")
   });
 
-
 client(1, 1)
   .then(resp => {
     console.log("OK"); 
@@ -55,7 +54,7 @@ client(1, 1)
   })
   
 
-  client([destination], {ImaginaQueEstoEsMuyLargo})
+  client([], {})
   .then(resp => {
     console.log("OK")
   })
