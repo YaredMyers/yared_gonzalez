@@ -14,7 +14,7 @@ modulePost.post("/messages", (request, response, next) => {
   } else if (destination !== "" && !destination.includes("@")){
     response.status(400);
     response.send("Destination has to be an email");
-  } else if (destination.length > 30 || body.length > 30) {
+  } else if (destination.length > 30 || body.length > 50) {
     response.status(400);
     response.send("You only can use 30 characters or less");
   } else {
