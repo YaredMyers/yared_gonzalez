@@ -36,7 +36,9 @@ modulePost.post("/messages", (request, response, next) => {
       response.send(`${resp.data}`)
     })
     .catch(e => { 
-      if (response.status(408)) {
+      console.log(response)
+      console.log(response.statusCode)
+      if (e.response === undefined) {
         var status = "TIMEOUT"
         saveMsg(destination, body, status)
         response.status(408)
