@@ -18,16 +18,26 @@ modulePost.post("/messages", (request, response, next) => {
   } else if (destination.length > 30 || body.length > 50) {
     response.status(400);
     response.send("You only can use 30 characters or less");
+
+
+
   } else {
+
+
+
     console.log("ENTRA")
-  saveMsg(destination, body)
-  clientMessageApp(destination, body)
+    
+    clientMessageApp(destination, body)
     .then(resp => {
-      console.log("Entra por Axios")
+      var status = "OK MAKEY";
+      saveMsg(destination, body, status)
+      console.log("Entra por Axios then")
       response.status(200);
-      response.send(`${resp.data}`);
+      response.send(`${resp.data}`)
     })
-    .catch(e => {
+    .catch(e => { 
+      var status = "KEEP TRYING";
+      saveMsg(destination, body, status)
       console.log("Error, internal server error");
       response.status(500);
       response.send("Send again guapetón, que hay premio");
