@@ -2,6 +2,7 @@ const express = require("express");
 const modulePost = express.Router();
 const axios = require("axios");
 const clientMessageApp = require("../clientMessageApp");
+const saveMsg = require("../msgCreation");
 
 modulePost.post("/messages", (request, response, next) => {
   const {destination, body} = request.body;
@@ -18,15 +19,19 @@ modulePost.post("/messages", (request, response, next) => {
     response.status(400);
     response.send("You only can use 30 characters or less");
   } else {
+    console.log("ENTRA")
+  saveMsg(destination, body);
   clientMessageApp(destination, body)
     .then(resp => {
-      console.log(resp)
+      console.log("ENTRA AXIOS")
+
+      // console.log(resp)
       response.status(200);
       response.send(`${resp.data}`);
-      console.log(clientMessageApp);
+      // console.log(clientMessageApp);
     })
     .catch(e => {
-      console.log(e)
+      // console.log(e)
       console.log("Error, internal server error");
       response.status(500);
       response.send("Send again guapetón, que hay premio");
