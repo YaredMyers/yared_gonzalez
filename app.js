@@ -4,6 +4,7 @@ const bodyParser = require("body-parser");
 const modulePost = require('./routes/modulePos');
 const index = require('./routes/index');
 const mongoose = require('mongoose');
+const getAllMsgRoute = require('./msgGet');
 // const Cabi = require('./model/Cabi')
 
 setTimeout(function(){
@@ -23,6 +24,7 @@ app.use(bodyParser.json());
 
 app.use('/', index);
 app.use('/', modulePost);
+app.use('/', getAllMsgRoute)
 
 
 // Server Started
