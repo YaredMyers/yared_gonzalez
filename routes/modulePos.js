@@ -36,11 +36,18 @@ modulePost.post("/messages", (request, response, next) => {
       response.send(`${resp.data}`)
     })
     .catch(e => { 
-      var status = "KEEP TRYING";
-      saveMsg(destination, body, status)
-      console.log("Error, internal server error");
-      response.status(500);
-      response.send("Send again guapetón, que hay premio");
+      if (response.status(408)) {
+        var status = "TIMEOUT"
+        saveMsg(destination, body, status)
+        response.status(408)
+        response.send("TIMEOUT EXISTS Ò_Ó")
+      } else {
+        var status = "KEEP TRYING";
+        saveMsg(destination, body, status)
+        response.status(500);
+        response.send("Guardado mensaje, pero no realizada petición externa");
+      }
+      // console.log("Error, internal server error");
     });
   }
 });
