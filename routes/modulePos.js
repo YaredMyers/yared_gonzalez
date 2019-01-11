@@ -22,34 +22,25 @@ modulePost.post("/messages", (request, response, next) => {
 
 
   } else {
-
-
-
-    console.log("ENTRA")
-    
     clientMessageApp(destination, body)
     .then(resp => {
-      var status = "OK MAKEY";
+      var status = "STATUS: OK";
       saveMsg(destination, body, status)
-      console.log("Entra por Axios then")
       response.status(200);
-      response.send(`${resp.data}`)
+      response.send("STATUS: OK. Msg saved and external request made good")
     })
     .catch(e => { 
-      console.log(response)
-      console.log(response.statusCode)
       if (e.response === undefined) {
-        var status = "TIMEOUT"
+        var status = "STATUS: TIMEOUT"
         saveMsg(destination, body, status)
         response.status(408)
-        response.send("TIMEOUT EXISTS Ò_Ó")
+        response.send("STATUS: TIMEOUT")
       } else {
-        var status = "KEEP TRYING";
+        var status = "STATUS: NO";
         saveMsg(destination, body, status)
         response.status(500);
-        response.send("Guardado mensaje, pero no realizada petición externa");
+        response.send("Msg saved, but external request failed");
       }
-      // console.log("Error, internal server error");
     });
   }
 });
