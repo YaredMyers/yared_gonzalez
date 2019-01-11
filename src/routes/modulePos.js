@@ -1,8 +1,8 @@
 const express = require("express");
 const modulePost = express.Router();
-const axios = require("axios");
-const clientMessageApp = require("../clientMessageApp");
-const saveMsg = require("../msgCreation");
+// const axios = require("axios");
+const clientMessageApp = require("../messageAppAxios/clientMessageApp");
+const saveMsg = require("../client/msgCreation");
 
 modulePost.post("/messages", (request, response, next) => {
   const {destination, body} = request.body;

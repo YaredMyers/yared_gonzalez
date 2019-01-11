@@ -2,11 +2,10 @@ require('dotenv').config();
 const express = require('express');
 const app = express();
 const bodyParser = require("body-parser");
-const modulePost = require('./routes/modulePos');
-const index = require('./routes/index');
-const mongoose = require('mongoose');
-const getAllMsgRoute = require('./msgGet');
-const connectDB = require('./mongoDBModule');
+const modulePost = require('./src/routes/modulePos');
+const index = require('./src/routes/modulePos');
+const getAllMsgRoute = require('./src/client/msgGet');
+const connectDB = require('./src/mongoDBModule');
 
 connectDB();
 

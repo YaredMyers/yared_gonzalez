@@ -1,7 +1,6 @@
 const mongoose = require('mongoose');
 require('dotenv').config();
 
-
 let connectDB = function() {
     setTimeout(function(){
   mongoose
@@ -14,6 +13,5 @@ let connectDB = function() {
       });
     }, 10000);
 }
-
 
 module.exports = connectDB;

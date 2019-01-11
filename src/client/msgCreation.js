@@ -1,4 +1,4 @@
-const CabiMsg = require("./models/CabiMsg.js");
+const CabiMsg = require("../models/CabiMsg");
 
 let saveMsg = function(destination, body, status) {
   const newMsg = new CabiMsg({ destination, body, status });

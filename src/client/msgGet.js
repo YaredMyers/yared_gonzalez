@@ -1,6 +1,6 @@
 const express = require('express');
 const getAllMsgRoute = express.Router();
-const CabiMsg = require("./models/CabiMsg.js");
+const CabiMsg = require("../models/CabiMsg");
 
 getAllMsgRoute.get('/messages',  (req, res, next) =>{
   CabiMsg.find({}, (error, messagesFromDB) => {
