@@ -14,3 +14,10 @@ getCreditRoute.get('/credit',  (req, res, next) =>{
 });
 
 module.exports = getCreditRoute;
+
+if (CabiGlobalCredit > 0) {
+  CabiGlobalCredit.findByIdAndUpdate({"amount": amount -1})
+}
+
+
+// CabiGlobalCredit.find({}, (error, messagesFromDB) => {
