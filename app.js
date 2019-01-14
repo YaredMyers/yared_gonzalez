@@ -8,6 +8,7 @@ const getAllMsgRoute = require('./src/client/msgGet');
 const creditPost = require('./src/routes/creditPost');
 const connectDB = require('./src/mongoDBModule');
 const myPORT = process.env.PORT;
+const getCreditRoute = require('./src/client/creditGet')
 
 connectDB();
 
@@ -18,6 +19,7 @@ app.use('/', index);
 app.use('/', modulePost);
 app.use('/', getAllMsgRoute);
 app.use('/', creditPost);
+app.use('/', getCreditRoute);
 
 
 // Server Started
