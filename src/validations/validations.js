@@ -1,6 +1,7 @@
 const CabiMsg = require("../models/CabiMsg");
 const saveMsg = require("../client/msgCreation");
 const clientMessageApp = require("../messageAppAxios/clientMessageApp");
+const payCredit = require('../validations/payCredit')
 
 let fieldsValidation = function(request, response, next) {
   const { destination, body } = request.body;
@@ -17,14 +18,27 @@ let fieldsValidation = function(request, response, next) {
     response.status(400);
     response.send("You only can use 30 characters or less");
   } else {
+
     clientMessageApp(destination, body)
       .then(resp => {
         var status = "STATUS: OK";
-        saveMsg(destination, body, status);
-        response.status(200);
-        response.send("STATUS: OK. Msg saved and external request made good");
+        return saveMsg(destination, body, status);
+        // response.status(200);
+        // response.send("STATUS: OK. Msg saved and external request made good");
+      })
+      .then(resp => {
+        return payCredit(100)
+        .then(() => {
+          response.status(200);
+          response.send("STATUS: OK. msg paid good :)");
+        })
+        .catch((e)=> {
+          response.status(500);
+          response.send(e);
+        })
       })
       .catch(e => {
+        console.log(e)
         if (e.response === undefined) {
           var status = "STATUS: TIMEOUT";
           saveMsg(destination, body, status);
@@ -37,7 +51,6 @@ let fieldsValidation = function(request, response, next) {
           response.send("Msg saved, but external request failed");
         }
       });
-  }
-};
+    }}
 
 module.exports = fieldsValidation;

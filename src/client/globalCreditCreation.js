@@ -31,4 +31,23 @@ let saveCredit = function(amount, response) {
 };
 
 
+// let payCredit = function(amount, response) {
+//   CabiGlobalCredit.findOneAndUpdate({ _id: `${resp[0]._id}` }, { amount: resp[0].amount - 100 })
+//         .then(resp => {
+//           response.status(200).send("mensaje pagado");
+//           console.log("mensaje pagado");
+//         })
+//         .catch(() => {
+//           response.status(500).send("no se ha podido cobrar el mensaje");
+//           console.log("no se ha podido cobrar el mensaje");
+//         });
+// }
+
+
+
+
+
 module.exports = saveCredit;
+// module.exports = payCredit;
+
+
