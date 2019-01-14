@@ -6,6 +6,7 @@ const modulePost = require('./src/routes/modulePos');
 const index = require('./src/routes/modulePos');
 const getAllMsgRoute = require('./src/client/msgGet');
 const connectDB = require('./src/mongoDBModule');
+const myPORT = process.env.PORT;
 
 connectDB();
 
@@ -21,6 +22,6 @@ app.listen(9001, () => {
   console.log('Hola, Mundo!')
 });
 
-app.listen(process.env.PORT, () => {
+app.listen(myPORT, () => {
 console.log('Hello World! From 9001 PORT!!')
 });

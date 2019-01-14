@@ -1,10 +1,11 @@
 const mongoose = require('mongoose');
 require('dotenv').config();
+const myCabiDB = process.env.CabiDB;
 
 let connectDB = function() {
     setTimeout(function(){
   mongoose
-      .connect(process.env.CabiDB, { useNewUrlParser: true })
+      .connect(myCabiDB, { useNewUrlParser: true })
       .then(x => {
           console.log(`Connected to Mongo! Database name: "${x.connections[0].name}"`)
       })

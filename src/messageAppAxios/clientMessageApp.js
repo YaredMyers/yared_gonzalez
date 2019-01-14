@@ -1,8 +1,9 @@
 const axios = require("axios");
+const axiosMessageApp = process.env.AxiosREQ;
 
 let clientMessageApp = function(destination, body) {
   return axios.post(
-    process.env.AxiosREQ,
+    axiosMessageApp,
     { destination, body },
     { timeout: 3000 }
   );
