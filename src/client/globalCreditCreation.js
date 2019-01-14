@@ -1,17 +1,15 @@
 const CabiGlobalCredit = require("../models/CabiCredit");
 
-let saveCredit = function(amount) {
+let saveCredit = function(amount, response) {
   const newCredit = new CabiGlobalCredit( {amount} );
   newCredit
     .save()
     .then(() => {
-      // response.status(200);
-      // response.send("Dinero pa tu body");
+      response.status(200).send("Dinero pa tu body");
       console.log("Credit successfully added :)");
     })
     .catch(() => {
-      // response.status(500);
-      // response.send("Msg saved, but external request failed");
+      response.status(500).send("No money no party :(");
       console.log("Credit failed");
     });
 };

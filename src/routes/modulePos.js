@@ -8,9 +8,4 @@ modulePost.post("/messages", (request, response, next) => {
   fieldsValidation(request, response, next);
 });
 
-modulePost.post("/credit", (request, response, next) => {
-  const amount  = request.body.amount;
-  saveCredit(amount);
-});
-
 module.exports = modulePost;

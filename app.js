@@ -5,6 +5,7 @@ const bodyParser = require("body-parser");
 const modulePost = require('./src/routes/modulePos');
 const index = require('./src/routes/modulePos');
 const getAllMsgRoute = require('./src/client/msgGet');
+const creditPost = require('./src/routes/creditPost');
 const connectDB = require('./src/mongoDBModule');
 const myPORT = process.env.PORT;
 
@@ -15,7 +16,9 @@ app.use(bodyParser.json());
 
 app.use('/', index);
 app.use('/', modulePost);
-app.use('/', getAllMsgRoute)
+app.use('/', getAllMsgRoute);
+app.use('/', creditPost);
+
 
 // Server Started
 app.listen(9001, () => {
