@@ -27,7 +27,9 @@ let fieldsValidation = function(request, response, next) {
         // response.send("STATUS: OK. Msg saved and external request made good");
       })
       .then(resp => {
+        // lock()
         return payCredit(100)
+        // unlock()
         .then(() => {
           response.status(200);
           response.send("STATUS: OK. msg paid good :)");
