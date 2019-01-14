@@ -65,3 +65,20 @@ Si, pero depende del servicio y la aplicación que se esté usando. Alguna de la
 - Notificar correctamente con control de errores, tanto en el then como en los catch. 
 - Cada uno con sus respectivos errores, basados en los problemas que surjan, con esto me refiero a no poner un mismo tipo de error para todo, cada uno con errores explicativos y sus res.send("blablabla") debidamente explicados.
 - Condicionar, de esta manera acotaremos los márgenes de error.
+
+
+EXERCISE 4 ----------------------------------------------------------------------------------------------------------->
+
+- Added a globalcredit model for the pays of the messages.
+
+- added POST and GET routes for the globalcredit balance.
+
+- added a validation that updates the actual balance or on the other hand, if the credit doesnt exists, it will be created.
+
+- added a validation for the pays when the messages are sending with a 200 STATUS OK. It will advice us that the message is already send, confirmed by the external request, and paid.
+
+- added "Lock-Unlock" sistem in PAY AREA and SAVECREDIT area for manage the multiple request of differents customers.
+
+- made a VALIDATIONS js file for the global credit.
+
+- At time, messages are only paid if the STATUS is OK, so for example for cases like TIMEOUT or NOT. Paids are not possible.

@@ -1,5 +1,5 @@
 const fieldsValidation = require("../validations/validations");
-const CabiGlobalCredit = require('../models/CabiCredit')
+const CabiGlobalCredit = require("../models/CabiCredit");
 
 let checkCredit = function(request, response, next) {
   CabiGlobalCredit.find({})
