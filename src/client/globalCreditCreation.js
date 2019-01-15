@@ -1,6 +1,13 @@
 const CabiGlobalCredit = require("../models/CabiCredit");
 
 let saveCredit = function(amount, response) {
+if (typeof amount !== "number"){
+  response.status(400);
+  response.send("It has to be number");
+} else if (amount === "") {
+  response.status(400);
+  response.send("It has to be number");
+} else {
   const newCredit = new CabiGlobalCredit({ amount });
   CabiGlobalCredit.find({})
     .then(resp => {
@@ -15,33 +22,43 @@ let saveCredit = function(amount, response) {
       console.log("cuenta no creada");
         })
       } else {
-        console.log(resp)
-        CabiGlobalCredit.findOneAndUpdate({ _id: `${resp[0]._id}` }, { amount: resp[0].amount + amount })
-        .then(resp => {
-          response.status(200).send("saldo actualizado");
-          console.log("saldo actualizado");
+          console.log(resp)
+          CabiGlobalCredit.findOneAndUpdate({ _id: `${resp[0]._id}` }, { amount: resp[0].amount + amount })
+          .then(resp => {
+            response.status(200).send("saldo actualizado");
+            console.log("saldo actualizado");
+          })
+          .catch(() => {
+            response.status(500).send("No money updated");
+            console.log("no money updated");
+          });
+        
+        }
         })
-        .catch(() => {
-          response.status(500).send("No money updated");
-          console.log("no money updated");
-        });
-
+        };
       }
-    })
-};
 
 
-// let payCredit = function(amount, response) {
-//   CabiGlobalCredit.findOneAndUpdate({ _id: `${resp[0]._id}` }, { amount: resp[0].amount - 100 })
-//         .then(resp => {
-//           response.status(200).send("mensaje pagado");
-//           console.log("mensaje pagado");
-//         })
-//         .catch(() => {
-//           response.status(500).send("no se ha podido cobrar el mensaje");
-//           console.log("no se ha podido cobrar el mensaje");
-//         });
+
+
+
+//por si acaso se jode todo
+// } else {
+//   console.log(resp)
+//   CabiGlobalCredit.findOneAndUpdate({ _id: `${resp[0]._id}` }, { amount: resp[0].amount + amount })
+//   .then(resp => {
+//     response.status(200).send("saldo actualizado");
+//     console.log("saldo actualizado");
+//   })
+//   .catch(() => {
+//     response.status(500).send("No money updated");
+//     console.log("no money updated");
+//   });
+
 // }
+// })
+// };
+
 
 
 
