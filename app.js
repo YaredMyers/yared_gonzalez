@@ -7,10 +7,12 @@ const index = require('./src/routes/modulePos');
 const getAllMsgRoute = require('./src/client/msgGet');
 const creditPost = require('./src/routes/creditPost');
 const connectDB = require('./src/mongoDBModule');
+const connectDB2 = require('./src/mongoDBModule2')
 const myPORT = process.env.PORT;
 const getCreditRoute = require('./src/client/creditGet')
 
-connectDB();
+connectDB("docker1");
+connectDB2("docker2");
 
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
