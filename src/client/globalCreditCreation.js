@@ -1,4 +1,4 @@
-const {CabiCredit, CabiCredit2} = require("../models/CabiCredit");
+const {CabiCredit} = require("../models/CabiCredit");
 // const CabiCredit2 = require("../models/CabiCredit");
 // const CabiGlobalCredit = require("../models/CabiCredit"); por si se jode todo
 
@@ -12,8 +12,9 @@ if (typeof amount !== "number"){
   response.status(400);
   response.send("It has to be number");
 } else {
-  const newCredit = new CabiCredit({ amount });
-  CabiCredit.find({})
+  const finalCredit = CabiCredit("primary")
+  const newCredit = new finalCredit( {amount} );
+  CabiCredit("primary").find({})
     .then(resp => {
       if (resp.length < 1) {
         newCredit.save()
@@ -27,7 +28,7 @@ if (typeof amount !== "number"){
         })
       } else {
           console.log(resp)
-          CabiCredit.findOneAndUpdate({ _id: `${resp[0]._id}` }, { amount: resp[0].amount + amount })
+          CabiCredit("primary").findOneAndUpdate({ _id: `${resp[0]._id}` }, { amount: resp[0].amount + amount })
           .then(resp => {
             response.status(200).send("saldo actualizado");
             console.log("saldo actualizado");

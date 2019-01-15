@@ -52,11 +52,24 @@ let db = {
   }
 };
 
-function getConnection(type) {
-  if (type === "isPrimary") {
-    return conn.isPrimary ? conn.conn : conn2.conn; 
+// function getConnection(type) {
+//   if (type === "isPrimary") {
+//     return conn.isPrimary && mongoose.connection.readyState === 1 ? conn.conn : conn2.conn; 
+//   } else if (type === "replica") {
+//     return conn.isPrimary && mongoose.connection.readyState === 1? conn2.conn : conn.conn; 
+//   }
+// }
+
+let getConnection = function(type){
+  if(type === "primary"){
+       // si conn es true, conecta a la database1 y haz el modelo con ella
+       return db.conn.isPrimary && db.conn.conn.readyState === 1 ?
+        db.conn.conn : db.conn2.conn
+        console.log(readyState)
   } else if (type === "replica") {
-    return 
+       // si conn2 es true, conecta a la database2 y haz el modelo con ella
+       return db.conn2.isPrimary && mongoose.connection.readyState === 1 ? 
+       db.conn.conn : db.conn2.conn
   }
 }
 
@@ -87,4 +100,4 @@ function getConnection(type) {
 //        });
 //   }, 4000)
 // }
-module.exports = {conn, conn2};
+module.exports = {getConnection};
