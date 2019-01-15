@@ -5,7 +5,7 @@ const myCabiDB2 = process.env.CabiDB2;
 let connectDB2 = function(param) {
     setTimeout(function(){
   mongoose
-      .connect(myCabiDB2, { useNewUrlParser: true })
+      .createConnection(myCabiDB2, { useNewUrlParser: true })
       .then(x => {
           console.log(`Connected to Mongo! Database name: "${x.name}" "${param}"`)
       })
