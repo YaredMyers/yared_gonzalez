@@ -44,44 +44,31 @@ const conn2 = mongoose.createConnection(process.env.CabiDB2, {
 let db = {
   conn: {
     isPrimary: true,
-    conn: conn
+    mongo: conn
   },
   conn2: {
     isPrimary: false,
-    conn: conn2
+    mongo: conn2
   }
 };
 
-// function getConnection(type) {
-//   if (type === "isPrimary") {
-//     return conn.isPrimary && mongoose.connection.readyState === 1 ? conn.conn : conn2.conn; 
-//   } else if (type === "replica") {
-//     return conn.isPrimary && mongoose.connection.readyState === 1? conn2.conn : conn.conn; 
-//   }
-// }
-
 let getConnection = function(type){
   if(type === "primary"){
-       // si conn es true, conecta a la database1 y haz el modelo con ella
-       return db.conn.isPrimary && db.conn.conn.readyState === 1 ?
-        db.conn.conn : db.conn2.conn
-        console.log(readyState)
-  } else if (type === "replica") {
-       // si conn2 es true, conecta a la database2 y haz el modelo con ella
-       return db.conn2.isPrimary && mongoose.connection.readyState === 1 ? 
-       db.conn.conn : db.conn2.conn
-  }
+       return db.conn.isPrimary && db.conn.mongo.readyState === 1 ?
+        db.conn.mongo : db.conn2.mongo
+  } else {
+       return !db.conn2.isPrimary && db.conn2.mongo.readyState === 1 ? 
+       db.conn2.mongo : console.log("entra en conecc")
+  } 
 }
 
-// let validateDB = function(){
-//   if (db.conn === true){
-//     return conn;
-//   } else {
-//     return conn2;
-//   }
-// }
-
-
+let isReplicaOnline = function(){
+  if(db.conn.mongo.readyState === 1 && db.conn2.mongo.readyState === 1){
+    return true;
+} else {
+    return false;
+}
+}
 
 // let mongoConnect = function (param) {
 //   const clear = setInterval(() => {
@@ -100,4 +87,4 @@ let getConnection = function(type){
 //        });
 //   }, 4000)
 // }
-module.exports = {getConnection};
+module.exports = {getConnection, isReplicaOnline, db};
