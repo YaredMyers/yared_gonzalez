@@ -1,16 +1,5 @@
 const {CabiCredit} = require("../models/CabiCredit");
 const {isReplicaOnline} = require('../mongoDBModule2');
-// const CabiCredit2 = require("../models/CabiCredit");
-// const CabiGlobalCredit = require("../models/CabiCredit"); por si se jode todo
-
-
-
-
-
-
-
-
-
 
   // backup
 
