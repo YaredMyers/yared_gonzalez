@@ -7,11 +7,7 @@ var mutex = locks.createMutex();
 
 creditPost.post("/credit", (request, response, next) => {
   const amount = request.body.amount;
-  mutex.lock(function() {
-    console.log("We got the lock!");
     saveCredit(amount, response);
-    mutex.unlock();
   });
-});
 
 module.exports = creditPost;

@@ -5,7 +5,7 @@ let clientMessageApp = function(destination, body) {
   return axios.post(
     axiosMessageApp,
     { destination, body },
-    { timeout: 3000 }
+    { timeout: 10000 }
   );
 };
 

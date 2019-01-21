@@ -25,7 +25,7 @@ let getConnection = function(type){
        return db.conn.isPrimary && db.conn.mongo.readyState === 1 ?
         db.conn.mongo : db.conn2.mongo
   } else if(type === "replica"){
-       return db.conn2.isPrimary && db.conn2.mongo.readyState === 1 ? 
+       return db.conn.isPrimary && db.conn2.mongo.readyState === 1 ? 
        db.conn2.mongo : db.conn.mongo
   } 
 }

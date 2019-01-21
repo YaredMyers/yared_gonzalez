@@ -36,30 +36,27 @@
 const CabiMsg = require("../models/CabiMsg");
 
 let saveMsg = function(msgID, status) {
-console.log(msgID)
-console.log(status)
+
   let MessagePrimary = CabiMsg("primary");
 
-  MessagePrimary.findOneAndUpdate({msgID: msgID}, { "status" : status }) 
+  return MessagePrimary.findOneAndUpdate({msgID: msgID}, { "status" : status }, { new: true }) 
       .then(messageP => {
-        console.log(messageP, "GUAY")
-      console.log("PENDING ---> OK, TIMEOUT, ERROR")
+        console.log(messageP)
+        console.log("GUAY")
+        let MessageReplica = CabiMsg("replica");    
+        return MessageReplica.findOneAndUpdate({msgID: msgID}, { "status" : status }, { new: true }) 
+        .then(messageP => {
+          console.log(messageP)
+          console.log("PENDING ---> OK, TIMEOUT, ERROR")
+        })
+        .catch(error => {
+          console.log(error)
+        })
       })
       .catch(error => {
         console.log(error)
         console.log("Error Primary: PENDING ---> OK, TIMEOUT, ERROR")
-      })
-
-      
-  let MessageReplica = CabiMsg("replica");
-    
-  MessageReplica.findOneAndUpdate({msgID: msgID}, { "status" : status }) 
-  .then(messageP => {
-
-  console.log("PENDING ---> OK, TIMEOUT, ERROR")
-  })
-  .catch(console.log("Error Replica: PENDING ---> OK, TIMEOUT, ERROR"))
- 
+      }) 
 }
 
 module.exports = saveMsg;

@@ -3,7 +3,7 @@ const CabiCredit = require("../models/CabiCredit");
 
 let payCredit = function() {
   
-   CabiCredit("primary").find({})
+   return CabiCredit("primary").find({})
   .then(credit => {
     
     

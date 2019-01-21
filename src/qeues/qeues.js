@@ -18,14 +18,11 @@ messageQueue.process(function(job,done){
  
   clientMessageApp(msgID, destination, body)
     .then(resp => {
-
       let status = "STATUS: OK";
-      saveMsg(msgID, status);
+      return saveMsg(msgID, status)
     })
     .then(resp => {
-      mutex.lock(function() {
-        payCredit()
-        mutex.unlock()
+        return payCredit()
         .then(resp => {
             done();
             console.log("entra en el then OK de ques")
@@ -33,25 +30,21 @@ messageQueue.process(function(job,done){
           })
           .catch(e => {
             done();
-            mutex.unlock();              
           })
-      });
     })
     .catch(e => {
       // console.log(e);
+      let status;
       if (e.response === undefined) {
-        let status = "STATUS: TIMEOUT";
-        saveMsg(msgID, status);
-        console.log("STATUS: TIMEOUT");
+        status = "STATUS: TIMEOUT";
       } else {
-        let status = "STATUS: NO";
-        saveMsg(msgID, status);
-        console.log("Msg saved, but external request failed");
+        status = "STATUS: NO";
       }
-      done();
+      console.log(status);
+      saveMsg(msgID, status).then(() => done());
     });
-
- })
+});
+ 
 
 let addToMyQueue = function(req,res,next) { 
   const msgID = uuidv4()
