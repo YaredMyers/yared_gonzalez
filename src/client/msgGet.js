@@ -3,7 +3,7 @@ const getAllMsgRoute = express.Router();
 const CabiMsg = require("../models/CabiMsg");
 
 getAllMsgRoute.get('/messages',  (req, res, next) =>{
-  CabiMsg('primary').find({}, (error, messagesFromDB) => {
+  CabiMsg('primary').find({msgID: req.params.id}, (error, messagesFromDB) => {
 		if (error) {
 			next(error);
 		} else {
