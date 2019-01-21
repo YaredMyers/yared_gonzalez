@@ -1,9 +1,9 @@
 const express = require("express");
 const getCreditRoute = express.Router();
-const CabiGlobalCredit = require("../models/CabiCredit");
+const CabiCredit = require("../models/CabiCredit");
 
 getCreditRoute.get("/credit", (req, res, next) => {
-  CabiGlobalCredit.find({}, (error, messagesFromDB) => {
+  CabiCredit.find({}, (error, messagesFromDB) => {
     if (error) {
       next(error);
     } else {
@@ -14,6 +14,6 @@ getCreditRoute.get("/credit", (req, res, next) => {
 
 module.exports = getCreditRoute;
 
-if (CabiGlobalCredit > 0) {
-  CabiGlobalCredit.findByIdAndUpdate({ amount: amount - 1 });
+if (CabiCredit > 0) {
+  CabiCredit.findByIdAndUpdate({ amount: amount - 1 });
 }

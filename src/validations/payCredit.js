@@ -1,49 +1,33 @@
+
 const CabiCredit = require("../models/CabiCredit");
-
-// let payCredit = function(amount) {
-//   return CabiGlobalCredit.find({})
-//     .then(resp => {
-//       return CabiGlobalCredit.findOneAndUpdate(
-//         { _id: `${resp[0]._id}` },
-//         { amount: resp[0].amount - amount }
-//       );
-//       console.log("mensaje pagado");
-//     })
-// };
-// // por si se jode todo
-// module.exports = payCredit;
-
-// const Credit = require("../models/UserCredit");
-// ////////////////////////////////////////////////////
-
 
 let payCredit = function() {
   
-   CabiGlobalCredit("primary").find({})
+   CabiCredit("primary").find({})
   .then(credit => {
-      console.log(credit[0].amount)
     
-      var primaryCredit = CabiGlobalCredit("primary");
+    
+      var CreditPrimary = CabiCredit("primary");
      
-      primaryCredit.findOneAndUpdate({_id: credit[0]._id}, { "amount" : credit[0].amount - 100 })
+      CreditPrimary.findOneAndUpdate({_id: credit[0]._id}, { "amount" : credit[0].amount - 100 })
       .then(credit => {
-        console.log("Primary msg payed")
+        console.log("Payed Primary!")
 
-        CabiGlobalCredit("replica").find({})
+        CabiCredit("replica").find({})
         .then(credit2 => {
-            console.log(credit2[0].amount)
+           
           
-            var CreditReplica = CabiGlobalCredit("replica");
+            var CreditReplica = CabiCredit("replica");
            
             CreditReplica.findOneAndUpdate({_id: credit2[0]._id}, { "amount" : credit2[0].amount - 100 })
             .then(credit2 => {
-              console.log("Replica msg payed")
+              console.log("Payed Replica!")
             })
             .catch(credit2 => {
-              console.log("Error paying Replica! Try again")
+              console.log("Error paying on Replica! Retry again")
 
-            var primaryCredit = CabiGlobalCredit("primary");
-             primaryCredit.findOneAndUpdate({_id: credit2[0]._id}, { "amount" : credit2[0].amount + 100 })
+            var CreditPrimary = CabiCredit("primary");
+             CreditPrimary.findOneAndUpdate({_id: credit2[0]._id}, { "amount" : credit2[0].amount + 100 })
             })
       
         })

@@ -4,6 +4,7 @@ const clientMessageApp = require("../messageAppAxios/clientMessageApp");
 const payCredit = require("../validations/payCredit");
 var locks = require("locks");
 var mutex = locks.createMutex();
+const addToMyQueue = require('../qeues/qeues')
 
 let fieldsValidation = function(request, response, next) {
   const { destination, body } = request.body;
@@ -20,45 +21,7 @@ let fieldsValidation = function(request, response, next) {
     response.status(400);
     response.send("You only can use 30 characters or less");
   } else {
-    clientMessageApp(destination, body)
-      .then(resp => {
-        var status = "STATUS: OK";
-        return saveMsg(destination, body, status);
-      })
-      .then(resp => {
-        mutex.lock(function() {
-          console.log("We got the lock!");
-          payCredit(100)
-            .then(resp => {
-              mutex.unlock();
-              response.status(200);
-              response.send("STATUS: OK. msg paid good :)");
-            })
-            .catch(e => {
-              mutex.unlock();
-              response.status(500);
-              response.send(e);
-            })
-
-            .catch(e => {
-              console.log(e);
-            });
-        });
-      })
-      .catch(e => {
-        console.log(e);
-        if (e.response === undefined) {
-          var status = "STATUS: TIMEOUT";
-          saveMsg(destination, body, status);
-          response.status(408);
-          response.send("STATUS: TIMEOUT");
-        } else {
-          var status = "STATUS: NO";
-          saveMsg(destination, body, status);
-          response.status(500);
-          response.send("Msg saved, but external request failed");
-        }
-      });
+    addToMyQueue(request,response)
   }
 };
 

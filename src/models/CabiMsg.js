@@ -1,10 +1,9 @@
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
-const { getConnection } = require("../mongoDBModule2");
-
+const {getConnection} = require("../mongoDBModule2");
 
 const cabiSchema = new Schema({
-  msgID: {type: String, unique: true},
+  msgID: {type: String},
   destination: { type: String, required: "required", unique: true },
   body: String,
   status: { type: String, enum: ["STATUS: PENDING", "STATUS: OK", "STATUS: NO", "STATUS: TIMEOUT"], default: "STATUS: TIMEOUT" },
@@ -16,7 +15,7 @@ const cabiSchema = new Schema({
     }
   });
 
-// const CabiMsg = mongoose.model('CabiMsg', cabiSchema); por si todo se jode
+// const CabiMsg = mongoose.model('CabiMsg', cabiSchema);
+var CabiMsg = (type) => getConnection(type).model("CabiMsg", cabiSchema);
 
-const CabiMsg = type => getConnection(type).model("CabiMsg", cabiSchema)
 module.exports = CabiMsg;

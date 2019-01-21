@@ -20,6 +20,7 @@ let db = {
 };
 
 let getConnection = function(type){
+  console.log(type)
   if(type === "primary"){
        return db.conn.isPrimary && db.conn.mongo.readyState === 1 ?
         db.conn.mongo : db.conn2.mongo
