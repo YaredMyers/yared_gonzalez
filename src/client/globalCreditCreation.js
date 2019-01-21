@@ -5,11 +5,9 @@ const isReplicaOnline = require('../mongoDBModule2');
 
   let saveCredit = function(amount, response) {
     if (typeof amount !== "number"){
-      response.status(400);
-      response.send("It has to be number");
+      console.log("It has to be number");
     } else if (amount === "") {
-      response.status(400);
-      response.send("It has to be number");
+      console.log("It has to be number");
     } else {
     
       if (isReplicaOnline){
@@ -38,11 +36,11 @@ const isReplicaOnline = require('../mongoDBModule2');
            myCredit.save()
            .then(credit => {
             
-             response.status(200).send("Todo esta guardado ahora!")
+             console.log("Todo esta guardado ahora!")
      
            })
            .catch(credit => {
-             response.status(500).send("Error GUARDANDO LA SEGUNDA")
+            console.log("Error GUARDANDO LA SEGUNDA")
            })
        
            } 
@@ -61,10 +59,10 @@ const isReplicaOnline = require('../mongoDBModule2');
              CreditReplica.findOneAndUpdate({_id: credit[0]._id}, { "amount" : credit[0].amount + amount })
              .then(credit => {
        
-               response.status(200).send("Credit two updated!")
+               console.log("Credit two updated!")
              })
              .catch(credit => {
-               response.status(500).send("Error updating credit")
+              console.log("Error updating credit")
              })
        
            }
@@ -80,7 +78,7 @@ const isReplicaOnline = require('../mongoDBModule2');
     
         })
         .catch(credit => {
-          response.status(500).send("Error adding credit")
+          console.log("Error adding credit")
         })
     
         } 
@@ -90,10 +88,10 @@ const isReplicaOnline = require('../mongoDBModule2');
           CabiCredit("primary").findOneAndUpdate({_id: credit[0]._id}, { "amount" : credit[0].amount + amount })
           .then(credit => {
             // console.log(credit)
-           response.status(200).send("Credit updated!")
+            console.log("Credit updated!")
           })
           .catch(credit => {
-           response.status(500).send("Error updating credit")
+            console.log("Error updating credit")
           }) /////// AQUI EL PUTO REPLICA
 
           CabiCredit("replica").find({})
@@ -102,10 +100,10 @@ const isReplicaOnline = require('../mongoDBModule2');
             CabiCredit("replica").findOneAndUpdate({_id: credit[0]._id}, { "amount" : credit[0].amount + amount })
             .then(credit => {
               console.log(credit)
-               response.status(200).send("Credit 2 updated!")
+               console.log("Credit 2 updated!")
             })
             .catch(credit => {
-             response.status(500).send("Error updating credit")
+              console.log("Error updating credit")
             })
 
           })  
@@ -134,7 +132,7 @@ const isReplicaOnline = require('../mongoDBModule2');
         
         
       } else {
-        res.status(408).send("One of your DBs is down, we cannot save your money")
+        console.log("One of your DBs is down, we cannot save your money")
               
               }
               
@@ -195,7 +193,7 @@ const isReplicaOnline = require('../mongoDBModule2');
   //          myCredit.save()
   //          .then(credit => {
             
-  //            response.status(200).send("Todo esta guardado ahora!")
+  //            console.log.send("Todo esta guardado ahora!")
      
   //          })
   //          .catch(credit => {
@@ -218,7 +216,7 @@ const isReplicaOnline = require('../mongoDBModule2');
   //            CreditReplica.findOneAndUpdate({_id: credit[0]._id}, { "amount" : credit[0].amount + amount })
   //            .then(credit => {
        
-  //              response.status(200).send("Credit two updated!")
+  //              console.log.send("Credit two updated!")
   //            })
   //            .catch(credit => {
   //              response.status(500).send("Error updating credit")
@@ -246,7 +244,7 @@ const isReplicaOnline = require('../mongoDBModule2');
   //         CabiCredit("primary").findOneAndUpdate({_id: credit[0]._id}, { "amount" : credit[0].amount + amount })
   //         .then(credit => {
     
-  //           response.status(200).send("Credit updated!")
+  //           console.log.send("Credit updated!")
   //         })
   //         .catch(credit => {
   //           response.status(500).send("Error updating credit")
@@ -281,7 +279,7 @@ const isReplicaOnline = require('../mongoDBModule2');
   //           if (resp.length < 1) {
   //             newCredit.save()
   //             .then(resp => {
-  //               response.status(200).send("nueva cuenta creada");
+  //               console.log.send("nueva cuenta creada");
   //               console.log("nueva cuenta creada");
   //             })
   //             .catch(() => {
@@ -292,7 +290,7 @@ const isReplicaOnline = require('../mongoDBModule2');
   //               console.log(resp)
   //               CabiCredit("primary").findOneAndUpdate({ _id: `${resp[0]._id}` }, { amount: resp[0].amount + amount })
   //               .then(resp => {
-  //                 response.status(200).send("saldo actualizado");
+  //                 console.log.send("saldo actualizado");
   //                 console.log("saldo actualizado");
   //               })
   //               .catch(() => {

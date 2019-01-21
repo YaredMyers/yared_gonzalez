@@ -7,7 +7,7 @@ let payCredit = function() {
   .then(credit => {
     
     
-      var CreditPrimary = CabiCredit("primary");
+      let CreditPrimary = CabiCredit("primary");
      
       CreditPrimary.findOneAndUpdate({_id: credit[0]._id}, { "amount" : credit[0].amount - 100 })
       .then(credit => {
@@ -17,7 +17,7 @@ let payCredit = function() {
         .then(credit2 => {
            
           
-            var CreditReplica = CabiCredit("replica");
+            let CreditReplica = CabiCredit("replica");
            
             CreditReplica.findOneAndUpdate({_id: credit2[0]._id}, { "amount" : credit2[0].amount - 100 })
             .then(credit2 => {
@@ -26,7 +26,7 @@ let payCredit = function() {
             .catch(credit2 => {
               console.log("Error paying on Replica! Retry again")
 
-            var CreditPrimary = CabiCredit("primary");
+            let CreditPrimary = CabiCredit("primary");
              CreditPrimary.findOneAndUpdate({_id: credit2[0]._id}, { "amount" : credit2[0].amount + 100 })
             })
       

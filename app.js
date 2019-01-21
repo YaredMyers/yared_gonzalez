@@ -19,7 +19,7 @@ const getCreditRoute = require('./src/client/creditGet')
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 
-app.use('/', index);
+// app.use('/', index);
 app.use('/', modulePost);
 app.use('/', getAllMsgRoute);
 app.use('/', creditPost);

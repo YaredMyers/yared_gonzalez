@@ -9,10 +9,10 @@ let myMessagePrimary = new PrimaryMsg(messageObj);
  myMessagePrimary.save()
 .then(myMessage => {
  console.log("guardado PENDING en primary")
- console.log(myMessage)
 
 })
 .catch(myMessage => {
+  console.log(myMessage, "este me interesa")
  console.log("error guardando PENDING en primary")
 })
 

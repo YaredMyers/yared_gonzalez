@@ -3,6 +3,8 @@ const pendingMessageSave = require('../client/PendingMsg')
 const clientMessageApp = require('../messageAppAxios/clientMessageApp')
 const saveMsg = require('../client/msgCreation')
 const payCredit = require('../validations/payCredit')
+const locks = require("locks");
+const mutex = locks.createMutex();
 
 //creo la cola:
 const messageQueue = new Queue('messageQueue');
@@ -14,64 +16,65 @@ messageQueue.process(function(job,done){
   const destination = job.data.destination;
   const body = job.data.body;
  
-  clientMessageApp(destination, body)
-      .then(resp => {
-        var status = "STATUS: OK";
-        return saveMsg(destination, body, status);
-      })
-      .then(resp => {
-        mutex.lock(function() {
-          console.log("We got the lock!");
-          payCredit(100)
-            .then(resp => {
-              mutex.unlock();
-              console.log("STATUS: OK. msg paid good :)");
-            })
-            .catch(e => {
-              mutex.unlock();
-              
-            })
+  clientMessageApp(msgID, destination, body)
+    .then(resp => {
 
-            .catch(e => {
-              console.log(e);
-            });
-        });
-      })
-      .catch(e => {
-        console.log(e);
-        if (e.response === undefined) {
-          var status = "STATUS: TIMEOUT";
-          saveMsg(destination, body, status);
-          console.log("STATUS: TIMEOUT");
-        } else {
-          var status = "STATUS: NO";
-          saveMsg(destination, body, status);
-          console.log("Msg saved, but external request failed");
-        }
+      let status = "STATUS: OK";
+      saveMsg(msgID, status);
+    })
+    .then(resp => {
+      mutex.lock(function() {
+        payCredit()
+        mutex.unlock()
+        .then(resp => {
+            done();
+            console.log("entra en el then OK de ques")
+            console.log("STATUS: OK. msg paid good :)");
+          })
+          .catch(e => {
+            done();
+            mutex.unlock();              
+          })
       });
- 
+    })
+    .catch(e => {
+      // console.log(e);
+      if (e.response === undefined) {
+        let status = "STATUS: TIMEOUT";
+        saveMsg(msgID, status);
+        console.log("STATUS: TIMEOUT");
+      } else {
+        let status = "STATUS: NO";
+        saveMsg(msgID, status);
+        console.log("Msg saved, but external request failed");
+      }
+      done();
+    });
+
  })
 
 let addToMyQueue = function(req,res,next) { 
-const msgID = uuidv4()
-const messageObj = {
-  msgID: msgID,
-  destination: req.body.destination,
-  body: req.body.body,
-  status: "STATUS: PENDING",
-}
+  const msgID = uuidv4()
+  const messageObj = {
+    msgID: msgID,
+    destination: req.body.destination,
+    body: req.body.body,
+    status: "STATUS: PENDING",
+  }
 
-pendingMessageSave(messageObj)
-// console.log(messageObj)
-
-messageQueue.add(messageObj)
- res.send(`processing your message ${messageObj.msgID}`)
-
+  return pendingMessageSave(messageObj)
+    .then(() => {
+      return messageQueue.add(messageObj)
+    })
+    .then(() => {
+      return res.send(`processing your message ${messageObj.msgID}`)
+    })
+  // console.log(messageObj)
 } 
 
-messageQueue.on('completed', function(job, result){
-  console.log("TRABAJO DE LA COLA HECHO")
-})
+// messageQueue.on('completed', function(job, result){
+  // console.log("TRABAJO DE LA COLA HECHO")
+// })
 
 
 module.exports = addToMyQueue;
