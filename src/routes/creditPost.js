@@ -7,7 +7,7 @@ var mutex = locks.createMutex();
 
 creditPost.post("/credit", (request, response, next) => {
   const amount = request.body.amount;
-    saveCredit(amount, response);
-  });
+  saveCredit(amount, response);
+});
 
 module.exports = creditPost;

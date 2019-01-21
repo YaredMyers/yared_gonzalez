@@ -6,15 +6,9 @@ const modulePost = require('./src/routes/modulePos');
 const index = require('./src/routes/modulePos');
 const getAllMsgRoute = require('./src/client/msgGet');
 const creditPost = require('./src/routes/creditPost');
-// const connectDB = require('./src/mongoDBModule');
-// const connectDB = require('./src/mongoDBModule2')
 const myPORT = process.env.PORT;
 const getCreditRoute = require('./src/client/creditGet')
-// const myCabiDB = process.env.CabiDB;
-// const myCabiDB2 = process.env.CabiDB2;
 
-// connectDB(myCabiDB);
-// connectDB(myCabiDB2);
 
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());

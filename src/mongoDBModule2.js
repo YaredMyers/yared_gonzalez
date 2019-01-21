@@ -19,23 +19,24 @@ let db = {
   }
 };
 
-let getConnection = function(type){
-  console.log(type)
-  if(type === "primary"){
-       return db.conn.isPrimary && db.conn.mongo.readyState === 1 ?
-        db.conn.mongo : db.conn2.mongo
-  } else if(type === "replica"){
-       return db.conn.isPrimary && db.conn2.mongo.readyState === 1 ? 
-       db.conn2.mongo : db.conn.mongo
-  } 
-}
+let getConnection = function(type) {
+  if (type === "primary") {
+    return db.conn.isPrimary && db.conn.mongo.readyState === 1
+      ? db.conn.mongo
+      : db.conn2.mongo;
+  } else if (type === "replica") {
+    return db.conn.isPrimary && db.conn2.mongo.readyState === 1
+      ? db.conn2.mongo
+      : db.conn.mongo;
+  }
+};
 
-let isReplicaOnline = function(){
-  if(db.conn.mongo.readyState === 1 && db.conn2.mongo.readyState === 1){
+let isReplicaOnline = function() {
+  if (db.conn.mongo.readyState === 1 && db.conn2.mongo.readyState === 1) {
     return true;
-} else {
+  } else {
     return false;
-}
-}
+  }
+};
 
-module.exports = {getConnection, isReplicaOnline, db};
+module.exports = { getConnection, isReplicaOnline, db };

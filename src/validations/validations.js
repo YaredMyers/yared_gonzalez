@@ -4,7 +4,7 @@ const clientMessageApp = require("../messageAppAxios/clientMessageApp");
 const payCredit = require("../validations/payCredit");
 var locks = require("locks");
 var mutex = locks.createMutex();
-const addToMyQueue = require('../qeues/qeues')
+const addToMyQueue = require("../qeues/qeues");
 
 let fieldsValidation = function(request, response, next) {
   const { destination, body } = request.body;
@@ -21,7 +21,7 @@ let fieldsValidation = function(request, response, next) {
     response.status(400);
     response.send("You only can use 30 characters or less");
   } else {
-    addToMyQueue(request,response)
+    addToMyQueue(request, response);
   }
 };
 
