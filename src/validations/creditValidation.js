@@ -1,8 +1,9 @@
 const fieldsValidation = require("../validations/validations");
-const CabiGlobalCredit = require("../models/CabiCredit");
+const CabiCredit = require("../models/CabiCredit");
 
 let checkCredit = function(request, response, next) {
-  CabiGlobalCredit.find({})
+  
+          CabiCredit("primary").find({})
     .then(resp => {
       if (resp[0].amount === 0) {
         response.status(500).send("no hay saldo");

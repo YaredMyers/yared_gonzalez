@@ -1,4 +1,4 @@
-const {CabiCredit} = require("../models/CabiCredit");
+const CabiCredit = require("../models/CabiCredit");
 const {isReplicaOnline} = require('../mongoDBModule2');
 
   // backup
@@ -23,12 +23,12 @@ const {isReplicaOnline} = require('../mongoDBModule2');
           
         myCredit.save()
         .then(credit => {
-           console.log("primeraguardada");
+           console.log("Primera DB credit creada");
            
            ///////
            return CabiCredit("replica").find({})
            .then(credit => {
-             console.log("entra")
+             console.log("entra por then de replica")
            if(credit.length === 0){
        
              var CreditReplic = CabiCredit("replica");
@@ -38,33 +38,27 @@ const {isReplicaOnline} = require('../mongoDBModule2');
            myCredit.save()
            .then(credit => {
             
-             response.status(200).send("Todo esta guardado ahora!")
+             response.status(200).send("Segunda y primera DB credit Creadas")
      
            })
            .catch(credit => {
-             response.status(500).send("Error GUARDANDO LA SEGUNDA")
+             response.status(500).send("Error creando la segunda")
            })
        
            } 
            
-           else { ///// YA FINAL
-    
-            
-           
-    
+           else { 
             /////////////////// ULTIMA PRUEBA
-    
-    
             var CreditReplica = CabiCredit("replica");
              var myCredit = new CreditReplica({amount});
     
              CreditReplica.findOneAndUpdate({_id: credit[0]._id}, { "amount" : credit[0].amount + amount })
              .then(credit => {
        
-               response.status(200).send("Credit two updated!")
+               response.status(200).send("Credit DB two updated!")
              })
              .catch(credit => {
-               response.status(500).send("Error updating credit")
+               response.status(500).send("Error updating DB two credit")
              })
        
            }
@@ -89,12 +83,11 @@ const {isReplicaOnline} = require('../mongoDBModule2');
         
           CabiCredit("primary").findOneAndUpdate({_id: credit[0]._id}, { "amount" : credit[0].amount + amount })
           .then(credit => {
-            // console.log(credit)
-           response.status(200).send("Credit updated!")
+           response.status(200).send("Credit DB one and two updated!")
           })
           .catch(credit => {
-           response.status(500).send("Error updating credit")
-          }) /////// AQUI EL PUTO REPLICA
+           response.status(500).send("Error updating DB one credit")
+          }) /////// AQUI LA PUTO REPLICA
 
           CabiCredit("replica").find({})
           .then(credit => {
@@ -111,11 +104,6 @@ const {isReplicaOnline} = require('../mongoDBModule2');
           })  
           .catch(error)        
        ///////
-            
-    
-    
-    
-    
     
           //////////
         }
@@ -134,7 +122,7 @@ const {isReplicaOnline} = require('../mongoDBModule2');
         
         
       } else {
-        res.status(408).send("One of your DBs is down, we cannot save your money")
+        res.status(408).send("One of your DataBases is down, you cannot save your money")
               
               }
               
@@ -180,12 +168,12 @@ const {isReplicaOnline} = require('../mongoDBModule2');
           
   //       myCredit.save()
   //       .then(credit => {
-  //          console.log("primeraguardada");
+  //          console.log("Primera DB creada");
            
   //          ///////
   //          return CabiCredit("replica").find({})
   //          .then(credit => {
-  //            console.log("entra")
+  //            console.log("entra por then de replica")
   //          if(credit.length === 0){
        
   //            var CreditReplic = CabiCredit("replica");
@@ -195,33 +183,27 @@ const {isReplicaOnline} = require('../mongoDBModule2');
   //          myCredit.save()
   //          .then(credit => {
             
-  //            response.status(200).send("Todo esta guardado ahora!")
+  //            response.status(200).send("Segunda y primera DB Creadas")
      
   //          })
   //          .catch(credit => {
-  //            response.status(500).send("Error GUARDANDO LA SEGUNDA")
+  //            response.status(500).send("Error creando la segunda")
   //          })
        
   //          } 
            
-  //          else { ///// YA FINAL
-    
-            
-           
-    
+  //          else { 
   //           /////////////////// ULTIMA PRUEBA
-    
-    
   //           var CreditReplica = CabiCredit("replica");
   //            var myCredit = new CreditReplica({amount});
     
   //            CreditReplica.findOneAndUpdate({_id: credit[0]._id}, { "amount" : credit[0].amount + amount })
   //            .then(credit => {
        
-  //              response.status(200).send("Credit two updated!")
+  //              response.status(200).send("Credit DB two updated!")
   //            })
   //            .catch(credit => {
-  //              response.status(500).send("Error updating credit")
+  //              response.status(500).send("Error updating DB two credit")
   //            })
        
   //          }
@@ -229,6 +211,7 @@ const {isReplicaOnline} = require('../mongoDBModule2');
   //        .catch(error => {
   //          console.log(error)
   //        })
+         
     
     
   //          /////////////
@@ -245,17 +228,27 @@ const {isReplicaOnline} = require('../mongoDBModule2');
         
   //         CabiCredit("primary").findOneAndUpdate({_id: credit[0]._id}, { "amount" : credit[0].amount + amount })
   //         .then(credit => {
-    
-  //           response.status(200).send("Credit updated!")
+  //          response.status(200).send("Credit DB one updated!")
   //         })
   //         .catch(credit => {
-  //           response.status(500).send("Error updating credit")
-  //         }) ///////
-            
-    
-    
-    
-    
+  //          response.status(500).send("Error updating DB one credit")
+  //         }) /////// AQUI LA PUTO REPLICA
+
+  //         CabiCredit("replica").find({})
+  //         .then(credit => {
+
+  //           CabiCredit("replica").findOneAndUpdate({_id: credit[0]._id}, { "amount" : credit[0].amount + amount })
+  //           .then(credit => {
+  //             console.log(credit)
+  //              response.status(200).send("Credit 2 updated!")
+  //           })
+  //           .catch(credit => {
+  //            response.status(500).send("Error updating credit")
+  //           })
+
+  //         })  
+  //         .catch(error)        
+  //      ///////
     
   //         //////////
   //       }
@@ -274,39 +267,12 @@ const {isReplicaOnline} = require('../mongoDBModule2');
         
         
   //     } else {
-  //       const finalCredit = CabiCredit("primary")
-  //       const newCredit = new finalCredit( {amount} );
-  //       CabiCredit("primary").find({})
-  //         .then(resp => {
-  //           if (resp.length < 1) {
-  //             newCredit.save()
-  //             .then(resp => {
-  //               response.status(200).send("nueva cuenta creada");
-  //               console.log("nueva cuenta creada");
-  //             })
-  //             .catch(() => {
-  //               response.status(500).send("cuenta no creada");
-  //           console.log("cuenta no creada");
-  //             })
-  //           } else {
-  //               console.log(resp)
-  //               CabiCredit("primary").findOneAndUpdate({ _id: `${resp[0]._id}` }, { amount: resp[0].amount + amount })
-  //               .then(resp => {
-  //                 response.status(200).send("saldo actualizado");
-  //                 console.log("saldo actualizado");
-  //               })
-  //               .catch(() => {
-  //                 response.status(500).send("No money updated");
-  //                 console.log("no money updated");
-  //               });
+  //       res.status(408).send("One of your DataBases is down, you cannot save your money")
               
   //             }
-  //             })
+              
   //             };
   //           }
-    
-  //     }
-
 
 
 
