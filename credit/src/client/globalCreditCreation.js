@@ -1,5 +1,5 @@
 const CabiCredit = require("../models/CabiCredit");
-const isReplicaOnline = require("../mongoDBModule2");
+const isReplicaOnline = require("../../mongoDBModule2");
 
 // backup
 

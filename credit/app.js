@@ -2,9 +2,9 @@ require('dotenv').config();
 const express = require('express');
 const app = express();
 const bodyParser = require("body-parser");
-const modulePost = require('./src/routes/modulePos');
-const index = require('./src/routes/modulePos');
-const getAllMsgRoute = require('./src/client/msgGet');
+const modulePost = require('../message/src/routes/modulePos');
+const index = require('../message/src/routes/index');
+const getAllMsgRoute = require('../message/src/client/msgGet');
 const creditPost = require('./src/routes/creditPost');
 const myPORT = process.env.PORT;
 const getCreditRoute = require('./src/client/creditGet')
@@ -21,7 +21,7 @@ app.use('/', getCreditRoute);
 
 
 // Server Started
-app.listen(9001, () => {
+app.listen(9017, () => {
   console.log('Hola, Mundo!')
 });
 

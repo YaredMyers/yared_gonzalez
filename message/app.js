@@ -5,9 +5,9 @@ const bodyParser = require("body-parser");
 const modulePost = require('./src/routes/modulePos');
 const index = require('./src/routes/modulePos');
 const getAllMsgRoute = require('./src/client/msgGet');
-const creditPost = require('./src/routes/creditPost');
+const creditPost = require('../credit/src/routes/creditPost');
 const myPORT = process.env.PORT;
-const getCreditRoute = require('./src/client/creditGet')
+const getCreditRoute = require('../credit/src/client/creditGet')
 
 
 app.use(bodyParser.urlencoded({ extended: false }));
@@ -21,7 +21,7 @@ app.use('/', getCreditRoute);
 
 
 // Server Started
-app.listen(9001, () => {
+app.listen(9007, () => {
   console.log('Hola, Mundo!')
 });
 

@@ -1,6 +1,6 @@
 const express = require("express");
 const creditPost = express.Router();
-const fieldsValidation = require("../validations/validations");
+const fieldsValidation = require("../../../message/src/validations/validations");
 const saveCredit = require("../client/globalCreditCreation");
 var locks = require("locks");
 var mutex = locks.createMutex();

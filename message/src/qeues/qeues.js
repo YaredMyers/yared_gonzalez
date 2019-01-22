@@ -2,7 +2,7 @@ const Queue = require("bull");
 const pendingMessageSave = require("../client/PendingMsg");
 const clientMessageApp = require("../messageAppAxios/clientMessageApp");
 const saveMsg = require("../client/msgCreation");
-const payCredit = require("../validations/payCredit");
+const payCredit = require("../../../credit/src/validations/payCredit");
 const locks = require("locks");
 const mutex = locks.createMutex();
 

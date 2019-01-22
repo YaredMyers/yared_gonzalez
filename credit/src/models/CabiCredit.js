@@ -1,6 +1,6 @@
 const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
-const { getConnection } = require("../mongoDBModule2");
+const { getConnection } = require("../../mongoDBModule2");
 
 const globalCreditSchema = new Schema(
   {

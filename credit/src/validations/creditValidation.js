@@ -1,4 +1,4 @@
-const fieldsValidation = require("../validations/validations");
+const fieldsValidation = require("../../../message/src/validations/validations");
 const CabiCredit = require("../models/CabiCredit");
 
 let checkCredit = function(request, response, next) {
