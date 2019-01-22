@@ -1,38 +1,38 @@
 const mongoose = require("mongoose");
 require("dotenv").config();
 
-const conn = mongoose.createConnection(process.env.CabiDB, {
+const mongoDBMessage = mongoose.createConnection(process.env.MongoDBMessage, {
   useNewUrlParser: true
 });
-const conn2 = mongoose.createConnection(process.env.CabiDB2, {
+const replicaMessage = mongoose.createConnection(process.env.ReplicaMessage, {
   useNewUrlParser: true
 });
 
 let db = {
-  conn: {
+  mongoDBMessage: {
     isPrimary: true,
-    mongo: conn
+    mongo: mongoDBMessage
   },
-  conn2: {
+  replicaMessage: {
     isPrimary: false,
-    mongo: conn2
+    mongo: replicaMessage
   }
 };
 
 let getConnection = function(type) {
   if (type === "primary") {
-    return db.conn.isPrimary && db.conn.mongo.readyState === 1
-      ? db.conn.mongo
-      : db.conn2.mongo;
+    return db.mongoDBMessage.isPrimary && db.mongoDBMessage.mongo.readyState === 1
+      ? db.mongoDBMessage.mongo
+      : db.replicaMessage.mongo;
   } else if (type === "replica") {
-    return db.conn.isPrimary && db.conn2.mongo.readyState === 1
-      ? db.conn2.mongo
-      : db.conn.mongo;
+    return db.mongoDBMessage.isPrimary && db.replicaMessage.mongo.readyState === 1
+      ? db.replicaMessage.mongo
+      : db.mongoDBMessage.mongo;
   }
 };
 
 let isReplicaOnline = function() {
-  if (db.conn.mongo.readyState === 1 && db.conn2.mongo.readyState === 1) {
+  if (db.mongoDBMessage.mongo.readyState === 1 && db.replicaMessage.mongo.readyState === 1) {
     return true;
   } else {
     return false;
