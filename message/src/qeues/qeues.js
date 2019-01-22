@@ -1,16 +1,32 @@
 const Queue = require("bull");
-const pendingMessageSave = require("../client/PendingMsg");
-const clientMessageApp = require("../messageAppAxios/clientMessageApp");
-const saveMsg = require("../client/msgCreation");
+// const pendingMessageSave = require("../client/PendingMsg");
+// const clientMessageApp = require("../messageAppAxios/clientMessageApp");
+// const saveMsg = require("../client/msgCreation");
+// const addToMyCreditQueue = require('../../../credit/src/qeuesCredit');
 // const payCredit = require("../../../credit/src/validations/payCredit");
-const locks = require("locks");
-const mutex = locks.createMutex();
+// const locks = require("locks");
+// const mutex = locks.createMutex();
 
 //creo la cola:
 const messageQueue = new Queue("messageQueue");
+const addToMyCreditQueue = new Queue("addToMyCreditQueue");
 const uuidv4 = require("uuid/v4");
 
 messageQueue.process(function(job, done) {
+
+  if (job.data.type === "Check my Credit" && job.data.statuCredit === "STATUS: NO") {
+
+
+  } else if (job.data.type === "Check my Credit" && job.data.statuCredit === "STATUS: YES") {
+
+
+  } else {
+
+
+  }
+
+
+
   const msgID = job.data.msgID;
   const destination = job.data.destination;
   const body = job.data.body;
@@ -60,4 +76,4 @@ let addToMyQueue = function(req, res, next) {
     });
 };
 
-module.exports = addToMyQueue;
+module.exports = {addToMyQueue, addToMyCreditQueue};

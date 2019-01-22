@@ -8,6 +8,8 @@ const getAllMsgRoute = require('./src/client/msgGet');
 // const creditPost = require('../credit/src/routes/creditPost');
 // const myPORT = process.env.PORT;
 // const getCreditRoute = require('../credit/src/client/creditGet')
+const addToMyCreditQueue = require('./src/qeues/qeues');
+const addToMyQueue = require('./src/qeues/qeues');
 
 
 app.use(bodyParser.urlencoded({ extended: false }));

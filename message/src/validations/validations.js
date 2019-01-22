@@ -21,7 +21,20 @@ let fieldsValidation = function(request, response, next) {
     response.status(400);
     response.send("You only can use 30 characters or less");
   } else {
-    addToMyQueue(request, response);
+
+    const msgID = uuidv4();
+
+    const msgObj = {
+    type: "Check available credit",
+    msgID: msgID,
+    destination: request.body.destination,
+    body: request.body.body,
+    status: "STATUS: PENDING"
+  }
+
+    addToMyCreditQueue.add(msgObj)
+
+    // addToMyQueue(request, response);
   }
 };
 
