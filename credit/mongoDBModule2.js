@@ -1,38 +1,38 @@
 const mongoose = require("mongoose");
 require("dotenv").config();
 
-const mongoDBCredit = mongoose.createConnection(process.env.MongoDBCredit, {
+const conn = mongoose.createConnection(process.env.MongoDBCredit, {
   useNewUrlParser: true
 });
-const replicaCredit = mongoose.createConnection(process.env.ReplicaCredit, {
+const conn2 = mongoose.createConnection(process.env.ReplicaCredit, {
   useNewUrlParser: true
 });
 
 let db = {
-  mongoDBCredit: {
+  conn: {
     isPrimary: true,
-    mongo: mongoDBCredit
+    mongo: conn
   },
-  replicaCredit: {
+  conn2: {
     isPrimary: false,
-    mongo: replicaCredit
+    mongo: conn2
   }
 };
 
 let getConnection = function(type) {
   if (type === "primary") {
-    return db.mongoDBCredit.isPrimary && db.mongoDBCredit.mongo.readyState === 1
-      ? db.mongoDBCredit.mongo
-      : db.replicaCredit.mongo;
+    return db.conn.isPrimary && db.conn.mongo.readyState === 1
+      ? db.conn.mongo
+      : db.conn2.mongo;
   } else if (type === "replica") {
-    return db.mongoDBCredit.isPrimary && db.replicaCredit.mongo.readyState === 1
-      ? db.replicaCredit.mongo
-      : db.mongoDBCredit.mongo;
+    return db.conn.isPrimary && db.conn2.mongo.readyState === 1
+      ? db.conn2.mongo
+      : db.conn.mongo;
   }
 };
 
 let isReplicaOnline = function() {
-  if (db.mongoDBCredit.mongo.readyState === 1 && db.replicaCredit.mongo.readyState === 1) {
+  if (db.conn.mongo.readyState === 1 && db.conn2.mongo.readyState === 1) {
     return true;
   } else {
     return false;
