@@ -2,9 +2,10 @@ const CabiMsg = require("../models/CabiMsg");
 const saveMsg = require("../client/msgCreation");
 const clientMessageApp = require("../messageAppAxios/clientMessageApp");
 // const payCredit = require("../../../credit/src/validations/payCredit");
-var locks = require("locks");
-var mutex = locks.createMutex();
+const uuidv4 = require("uuid/v4");
+
 const addToMyQueue = require("../qeues/qeues");
+const {addToMyCreditQueue} = require('../qeues/qeues');
 
 let fieldsValidation = function(request, response, next) {
   const { destination, body } = request.body;

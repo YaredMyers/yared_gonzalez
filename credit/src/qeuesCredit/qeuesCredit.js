@@ -11,7 +11,9 @@ const uuidv4 = require("uuid/v4");
 
 
 creditQueue.process(function(job,done){
-checkCredit(job)
+return checkCredit(job)
+.then(check => addToMyQueue.add(check))
+.then(done)
 
 })
 

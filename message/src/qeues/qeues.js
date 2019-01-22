@@ -17,21 +17,12 @@ messageQueue.process(function(job, done) {
   if (job.data.type === "Check my Credit" && job.data.statuCredit === "STATUS: NO") {
 
 
-  } else if (job.data.type === "Check my Credit" && job.data.statuCredit === "STATUS: YES") {
-
-
-  } else {
-
-
-  }
-
-
-
-  const msgID = job.data.msgID;
-  const destination = job.data.destination;
-  const body = job.data.body;
-
-  clientMessageApp(msgID, destination, body)
+  } else if (job.data.type === "Check my Credit" && job.data.statuCredit === "STATUS: OK") {
+    const msgID = job.data.msgID;
+    const destination = job.data.destination;
+    const body = job.data.body;
+    
+    clientMessageApp(msgID, destination, body)
     .then(resp => {
       let status = "STATUS: OK";
       return saveMsg(msgID, status);
@@ -54,26 +45,36 @@ messageQueue.process(function(job, done) {
         status = "STATUS: NO";
       }
       console.log(status);
-      saveMsg(msgID, status).then(() => done());
-    });
-});
+      saveMsg(msgID, status).then(() => done())
+     });
+  // });
 
-let addToMyQueue = function(req, res, next) {
-  const msgID = uuidv4();
-  const messageObj = {
-    msgID: msgID,
-    destination: req.body.destination,
-    body: req.body.body,
-    status: "STATUS: PENDING"
-  };
+  } else {
+console.log("else vacio")
 
-  return pendingMessageSave(messageObj)
-    .then(() => {
-      return messageQueue.add(messageObj);
-    })
-    .then(() => {
-      return res.send(`processing your message ${messageObj.msgID}`);
-    });
-};
+  }
 
-module.exports = {addToMyQueue, addToMyCreditQueue};
+
+
+
+
+// let addToMyQueue = function(req, res, next) {
+//   const msgID = uuidv4();
+//   const messageObj = {
+//     msgID: msgID,
+//     destination: req.body.destination,
+//     body: req.body.body,
+//     status: "STATUS: PENDING"
+//   };
+
+//   return pendingMessageSave(messageObj)
+//     .then(() => {
+//       return messageQueue.add(messageObj);
+//     })
+//     .then(() => {
+//       return res.send(`processing your message ${messageObj.msgID}`);
+//     });
+// };
+})
+
+module.exports = {messageQueue, addToMyCreditQueue}
