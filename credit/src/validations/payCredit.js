@@ -13,7 +13,7 @@ let payCredit = function() {
         .then(credit => {
           console.log("Payed Primary!");
 
-          CabiCredit("replica")
+         return CabiCredit("replica")
             .find({})
             .then(credit2 => {
               let CreditReplica = CabiCredit("replica");

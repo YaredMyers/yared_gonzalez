@@ -18,12 +18,11 @@ creditQueue.process(function(job,done){
   // console.log(job.data, "CREDIT")
  return checkCredit(job)
 .then(checkMyCabiCredit => {
-console.log(checkMyCabiCredit)
-  if(checkMyCabiCredit.statusCredit === "STATUS: OK") {
-    console.log(checkMyCabiCredit, "creditquiu")
-
+  if(checkMyCabiCredit.status === "STATUS: OK") {
+    
+    console.log(checkMyCabiCredit, "CHECKMYCABICREDIT")
     return payCredit().then(()=> 
-      messageQueue.add(checkMyCabiCredit)
+     messageQueue.add(checkMyCabiCredit)
     )
     .then(done)
   }

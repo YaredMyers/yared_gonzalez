@@ -20,7 +20,7 @@ let checkCredit = function(job) {
         type: "Check my Credit",
         msgID: job.data.msgID,
         message: job.data,
-        statusCredit: "STATUS: NO"
+        status: "STATUS: NO"
       }
       
       console.log("no hay saldo");
@@ -32,7 +32,7 @@ let checkCredit = function(job) {
           type: "Check my Credit",
           msgID: job.data.msgID,
           message: job.data,
-          statusCredit: "STATUS: OK"
+          status: "STATUS: OK"
         }
         console.log( "GENIAL STATUS OK")
         // fieldsValidation(request, response, next);
@@ -46,7 +46,7 @@ let checkCredit = function(job) {
         type: "Check my Credit",
         msgID: msgID,
         message: job.data,
-        statusCredit: "STATUS: NO"
+        status: "STATUS: NO"
       }
       console.log("no hay saldo en el catch");
       return checkMyCabiCredit
