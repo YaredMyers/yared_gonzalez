@@ -10,25 +10,24 @@ const CabiCredit = require("../models/CabiCredit");
 // const msgID = uuidv4();
 
 let checkCredit = function(job) {
-  // console.log("checkcredit 4")
-  CabiCredit("primary")
+  return CabiCredit("primary")
   .find({})
   .then(resp => {
     if (resp[0].amount === 0) {
       
-
-        let checkMyCabiCredit = {
-          type: "Check my Credit",
-          msgID: job.data.msgID,
-          message: job.data,
-          statusCredit: "STATUS: NO"
-        }
-
-        console.log("no hay saldo");
-        return checkMyCabiCredit;
-
-      } else {
-
+      
+      let checkMyCabiCredit = {
+        type: "Check my Credit",
+        msgID: job.data.msgID,
+        message: job.data,
+        statusCredit: "STATUS: NO"
+      }
+      
+      console.log("no hay saldo");
+      return checkMyCabiCredit;
+      
+    } else {
+      
         let checkMyCabiCredit = {
           type: "Check my Credit",
           msgID: job.data.msgID,

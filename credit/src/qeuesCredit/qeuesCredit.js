@@ -16,17 +16,13 @@ creditQueue.process(function(job,done){
 
   // console.log("creditqueues 4.2")
   // console.log(job.data, "CREDIT")
- checkCredit(job)
+ return checkCredit(job)
 .then(checkMyCabiCredit => {
-  console.log("credit pro 3")
-
-  console.log(checkMyCabiCredit, "IMPORTANTE")
-  console.log("credit pro 4")
-
+console.log(checkMyCabiCredit)
   if(checkMyCabiCredit.statusCredit === "STATUS: OK") {
-    console.log("credit pro 4")
+    console.log(checkMyCabiCredit, "creditquiu")
 
-    payCredit().then(()=> 
+    return payCredit().then(()=> 
       messageQueue.add(checkMyCabiCredit)
     )
     .then(done)

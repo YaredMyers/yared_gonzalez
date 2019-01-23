@@ -17,18 +17,16 @@ const uuidv4 = require("uuid/v4");
 
 messageQueue.process(function(job, done) {
   // console.log("entra en queues 3.2 process")
-
-  console.log(job.data.type, "dentro process MSG JODER")
-
-
+  
+  
   if (job.data.type === "Check my Credit" && job.data.statuCredit === "STATUS: NO") {
-
- console.log("no hay credito")
- done()
-
+    
+    console.log("no hay credito")
+    done()
+    
   } else if (job.data.type === "Check my Credit" && job.data.statuCredit === "STATUS: OK") {
-    console.log(job.data, "PROCES DE MSG")
-
+    console.log(job.data, "**********")
+    
     const msgID = job.data.message.msgID;
     const destination = job.data.message.destination;
     const body = job.data.message.body;
@@ -38,6 +36,7 @@ messageQueue.process(function(job, done) {
 
     return clientMessageApp(msgID, destination, body)
     .then(resp => {
+      console.log("ENTRA EN STAT OK")
       let status = "STATUS: OK";
       return saveMsg(msgID, status);
     })
