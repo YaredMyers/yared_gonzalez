@@ -2,7 +2,8 @@ const CabiMsg = require("../models/CabiMsg");
 
 let saveMsg = function(msgID, status) {
   let MessagePrimary = CabiMsg("primary");
-
+console.log(msgID)
+console.log(status)
   return MessagePrimary.findOneAndUpdate(
     { msgID: msgID },
     { status: status },
@@ -22,7 +23,7 @@ let saveMsg = function(msgID, status) {
           console.log("PENDING ---> OK, TIMEOUT, ERROR");
         })
         .catch(error => {
-          console.log(error);
+          return console.log(error);
         });
     })
     .catch(error => {

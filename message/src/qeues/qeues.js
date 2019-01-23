@@ -21,12 +21,11 @@ messageQueue.process(function(job, done) {
   // console.log(job.data.type)
   // console.log(job.data.statusCredit)
   
-  if (job.data.type === "Check my Credit" && job.data.statusCredit === "STATUS: NO") {
+  if (job.data.type === "Check my Credit" && job.data.status === "STATUS: NO") {
     console.log("no hay credito")
     done()
     
-  } else if (job.data.type === "Check my Credit" && job.data.statusCredit === "STATUS: OK") {
-    // console.log(job.data, "**********")
+  } else if (job.data.type === "Check my Credit" && job.data.status === "STATUS: OK") {
     
     const msgID = job.data.message.msgID;
     const destination = job.data.message.destination;
@@ -37,6 +36,7 @@ messageQueue.process(function(job, done) {
     
     return clientMessageApp(msgID, destination, body)
     .then(resp => {
+      // console.log(job.data, "**********")
       // console.log("ENTRA EN STAT OK")
       // console.log(msgID)
       let status = "STATUS: OK";
@@ -45,9 +45,9 @@ messageQueue.process(function(job, done) {
     .catch(e => {
       let status;
       if (e.response === undefined) {
-        status = "STATUS: TIMEOUT";
+        return status = "STATUS: TIMEOUT";
       } else {
-        status = "STATUS: NO";
+        return status = "STATUS: NO";
       }
       // console.log(job.data, "dentro process")
 

@@ -8,18 +8,17 @@ const messageQueue = new Queue("messageQueue");
 
 const uuidv4 = require("uuid/v4");
 
-// console.log("credit pro 1")
-
+console.log("UNGAUNGA1")
 // console.log("creditqueues 4.1")
 creditQueue.process(function(job,done){
   // console.log("credit pro 2")
-
+  console.log("UNGAUNGA2")
   // console.log("creditqueues 4.2")
   // console.log(job.data, "CREDIT")
  return checkCredit(job)
 .then(checkMyCabiCredit => {
   if(checkMyCabiCredit.status === "STATUS: OK") {
-    
+    console.log("UNGAUNGA1")
     console.log(checkMyCabiCredit, "CHECKMYCABICREDIT")
     return payCredit().then(()=> 
      messageQueue.add(checkMyCabiCredit)

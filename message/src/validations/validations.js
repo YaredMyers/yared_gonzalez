@@ -31,7 +31,7 @@ let fieldsValidation = function(request, response, next) {
     msgID: msgID,
     destination: request.body.destination,
     body: request.body.body,
-    status: "STATUS: PENDING"
+    status: "STATUS: OK"
   }
 
   pendingMessageSave(msgObj).then(()=>{
