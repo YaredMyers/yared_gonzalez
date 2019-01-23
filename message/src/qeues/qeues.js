@@ -6,36 +6,40 @@ const Queue = require("bull");
 // const payCredit = require("../../../credit/src/validations/payCredit");
 // const locks = require("locks");
 // const mutex = locks.createMutex();
-
+const clientMessageApp = require('../messageAppAxios/clientMessageApp');
+const saveMsg = require('../client/msgCreation');
 //creo la cola:
 const messageQueue = new Queue("messageQueue");
-const creditQueue = new Queue("addToMyCreditQueue");
+const creditQueue = new Queue("creditQueue"); //addToMyCreditQueue
 const uuidv4 = require("uuid/v4");
 
-messageQueue.process(function(job, done) {
+// console.log("entra en queues 3.1")
 
-  console.log(job.data, "dentro process")
+messageQueue.process(function(job, done) {
+  // console.log("entra en queues 3.2 process")
+
+  console.log(job.data.type, "dentro process MSG JODER")
+
+
   if (job.data.type === "Check my Credit" && job.data.statuCredit === "STATUS: NO") {
 
+ console.log("no hay credito")
+ done()
+
   } else if (job.data.type === "Check my Credit" && job.data.statuCredit === "STATUS: OK") {
-    const msgID = job.data.msgID;
-    const destination = job.data.destination;
-    const body = job.data.body;
+    console.log(job.data, "PROCES DE MSG")
+
+    const msgID = job.data.message.msgID;
+    const destination = job.data.message.destination;
+    const body = job.data.message.body;
     
-    clientMessageApp(msgID, destination, body)
+    // console.log(job.data, "dentro process")
+
+
+    return clientMessageApp(msgID, destination, body)
     .then(resp => {
       let status = "STATUS: OK";
       return saveMsg(msgID, status);
-    })
-    .then(resp => {
-      return payCredit()
-        .then(resp => {
-          done();
-          console.log("STATUS: OK. msg paid good :)");
-        })
-        .catch(e => {
-          done();
-        });
     })
     .catch(e => {
       let status;
@@ -44,13 +48,14 @@ messageQueue.process(function(job, done) {
       } else {
         status = "STATUS: NO";
       }
-      console.log(status);
+      // console.log(job.data, "dentro process")
+
       saveMsg(msgID, status).then(() => done())
      });
   // });
 
   } else {
-console.log("else vacio")
+console.log("no enviado")
 
   }
 
@@ -69,12 +74,14 @@ console.log("else vacio")
 
 //   return pendingMessageSave(messageObj)
 //     .then(() => {
-//       return messageQueue.add(messageObj);
+//       console.log("entra por pending msgs then")
+//       return creditQueue.add(messageObj);
 //     })
 //     .then(() => {
 //       return res.send(`processing your message ${messageObj.msgID}`);
 //     });
-// };
+// });
+// })
 })
 
 module.exports = {messageQueue, creditQueue}

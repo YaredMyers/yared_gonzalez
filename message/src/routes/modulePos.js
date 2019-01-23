@@ -8,6 +8,8 @@ const uuidv4 = require("uuid/v4");
 modulePost.post("/messages", (request, response, next) => {
   fieldsValidation(request,response);
   // checkCredit(request, response, next);
+  // console.log("entra en post 1")
+
   
 });
 

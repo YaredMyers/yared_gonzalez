@@ -2,17 +2,36 @@ const Queue = require("bull");
 
 const checkCredit = require('../validations/creditValidation');
 
-
+const payCredit = require('../validations/payCredit')
 const creditQueue = new Queue("creditQueue");
 const messageQueue = new Queue("messageQueue");
 
 const uuidv4 = require("uuid/v4");
 
+// console.log("credit pro 1")
+
+// console.log("creditqueues 4.1")
 creditQueue.process(function(job,done){
-  console.log(job.data)
-return checkCredit(job)
-.then(elem => messageQueue.add(elem))
-.then(done)
+  // console.log("credit pro 2")
+
+  // console.log("creditqueues 4.2")
+  // console.log(job.data, "CREDIT")
+ checkCredit(job)
+.then(checkMyCabiCredit => {
+  console.log("credit pro 3")
+
+  console.log(checkMyCabiCredit, "IMPORTANTE")
+  console.log("credit pro 4")
+
+  if(checkMyCabiCredit.statusCredit === "STATUS: OK") {
+    console.log("credit pro 4")
+
+    payCredit().then(()=> 
+      messageQueue.add(checkMyCabiCredit)
+    )
+    .then(done)
+  }
+})
 
 })
 
@@ -58,13 +77,13 @@ return checkCredit(job)
   //   status: "STATUS: PENDING"
   // };
 
-//   return pendingMessageSave(messageObj)
-//     .then(() => {
-//       return creditQueue.add(messageObj);
-//     })
-//     .then(() => {
-//       return res.send(`processing your message ${messageObj.msgID}`);
-//     });
+  // return pendingMessageSave(messageObj)
+  //   .then(() => {
+  //     return creditQueue.add(messageObj);
+  //   })
+  //   .then(() => {
+  //     return res.send(`processing your message ${messageObj.msgID}`);
+  //   });
 // };
 
 module.exports = {creditQueue, messageQueue};

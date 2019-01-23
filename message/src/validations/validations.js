@@ -2,6 +2,7 @@ const CabiMsg = require("../models/CabiMsg");
 const saveMsg = require("../client/msgCreation");
 const clientMessageApp = require("../messageAppAxios/clientMessageApp");
 // const payCredit = require("../../../credit/src/validations/payCredit");
+const pendingMessageSave = require('../client/PendingMsg')
 const uuidv4 = require("uuid/v4");
 
 const {creditQueue} = require('../qeues/qeues');
@@ -21,6 +22,7 @@ let fieldsValidation = function(request, response, next) {
     response.status(400);
     response.send("You only can use 30 characters or less");
   } else {
+    // console.log("entra en validations 2")
 
     const msgID = uuidv4();
 
@@ -31,10 +33,15 @@ let fieldsValidation = function(request, response, next) {
     body: request.body.body,
     status: "STATUS: PENDING"
   }
-  creditQueue.add(msgObj)
+
+  pendingMessageSave(msgObj).then(()=>{
+    creditQueue.add(msgObj)
+    response.send(`processing your message ${msgObj.msgID}`)
+  })
 
     // addToMyQueue(request, response);
   }
 };
 
 module.exports = fieldsValidation;
+
