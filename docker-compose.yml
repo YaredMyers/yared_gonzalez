@@ -33,7 +33,7 @@ services:
   message3:
     build: message/
     ports:
-      - "9008:9007"
+      - "9009:9007"
     links:
       - messageapp
       - mongodb_message

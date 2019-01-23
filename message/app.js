@@ -9,6 +9,7 @@ const getAllMsgRoute = require('./src/client/msgGet');
 // const myPORT = process.env.PORT;
 // const getCreditRoute = require('../credit/src/client/creditGet')
 const {creditQueue, messageQueue} = require('./src/qeues/qeues');
+const getHealthRoute = require('./src/routes/healthGet');
 
 
 app.use(bodyParser.urlencoded({ extended: false }));
@@ -19,6 +20,10 @@ app.use('/', modulePost);
 app.use('/', getAllMsgRoute);
 // app.use('/', creditPost);
 // app.use('/', getCreditRoute);
+app.use('/', getHealthRoute);
+
+
+
 
 
 // Server Started
