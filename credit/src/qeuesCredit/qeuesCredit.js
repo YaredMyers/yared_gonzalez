@@ -1,18 +1,17 @@
 const Queue = require("bull");
-const locks = require("locks");
-const mutex = locks.createMutex();
+
 const checkCredit = require('../validations/creditValidation');
 
 
 const creditQueue = new Queue("creditQueue");
-const addToMyQueue = new Queue("addToMyQueue");
+const messageQueue = new Queue("messageQueue");
 
 const uuidv4 = require("uuid/v4");
 
-
 creditQueue.process(function(job,done){
+  console.log(job.data)
 return checkCredit(job)
-.then(check => addToMyQueue.add(check))
+.then(elem => messageQueue.add(elem))
 .then(done)
 
 })
@@ -68,4 +67,4 @@ return checkCredit(job)
 //     });
 // };
 
-module.exports = {addToMyCreditQueue, addToMyQueue};
+module.exports = {creditQueue, messageQueue};

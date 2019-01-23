@@ -4,8 +4,7 @@ const clientMessageApp = require("../messageAppAxios/clientMessageApp");
 // const payCredit = require("../../../credit/src/validations/payCredit");
 const uuidv4 = require("uuid/v4");
 
-const addToMyQueue = require("../qeues/qeues");
-const {addToMyCreditQueue} = require('../qeues/qeues');
+const {creditQueue} = require('../qeues/qeues');
 
 let fieldsValidation = function(request, response, next) {
   const { destination, body } = request.body;
@@ -32,8 +31,7 @@ let fieldsValidation = function(request, response, next) {
     body: request.body.body,
     status: "STATUS: PENDING"
   }
-
-    addToMyCreditQueue.add(msgObj)
+  creditQueue.add(msgObj)
 
     // addToMyQueue(request, response);
   }

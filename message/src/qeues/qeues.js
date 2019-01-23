@@ -9,13 +9,13 @@ const Queue = require("bull");
 
 //creo la cola:
 const messageQueue = new Queue("messageQueue");
-const addToMyCreditQueue = new Queue("addToMyCreditQueue");
+const creditQueue = new Queue("addToMyCreditQueue");
 const uuidv4 = require("uuid/v4");
 
 messageQueue.process(function(job, done) {
 
+  console.log(job.data, "dentro process")
   if (job.data.type === "Check my Credit" && job.data.statuCredit === "STATUS: NO") {
-
 
   } else if (job.data.type === "Check my Credit" && job.data.statuCredit === "STATUS: OK") {
     const msgID = job.data.msgID;
@@ -77,4 +77,4 @@ console.log("else vacio")
 // };
 })
 
-module.exports = {messageQueue, addToMyCreditQueue}
+module.exports = {messageQueue, creditQueue}

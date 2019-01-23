@@ -8,8 +8,7 @@ const bodyParser = require("body-parser");
 const creditPost = require('./src/routes/creditPost');
 const myPORT = process.env.PORT;
 const getCreditRoute = require('./src/client/creditGet')
-const addToMyQueue = require('./src/qeuesCredit');
-const addToMyCreditQueue = require('./src/qeuesCredit');
+const {creditQueue, messageQueue} = require('./src/qeuesCredit/qeuesCredit');
 
 
 app.use(bodyParser.urlencoded({ extended: false }));
