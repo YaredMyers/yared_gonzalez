@@ -12,6 +12,7 @@ const saveMsg = require('../client/msgCreation');
 const messageQueue = new Queue("messageQueue", 'yared_gonzalez_redis_1:6379');
 const creditQueue = new Queue("creditQueue", 'yared_gonzalez_redis_1:6379'); //addToMyCreditQueue
 const uuidv4 = require("uuid/v4");
+const breaker = require('../messageAppAxios/circuitBreaker')
 
 // console.log("entra en queues 3.1")
 
@@ -34,7 +35,7 @@ messageQueue.process(function(job, done) {
     // console.log(job.data, "dentro process")
     
     
-    return clientMessageApp(msgID, destination, body)
+    return breaker.fire(destination, body)
     .then(resp => {
       // console.log(job.data, "**********")
       // console.log("ENTRA EN STAT OK")
