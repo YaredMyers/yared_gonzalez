@@ -1,6 +1,6 @@
 version: "3"
 services:
-  message:
+  message1:
     build: message/
     ports:
       - "9007:9007"
@@ -98,12 +98,15 @@ services:
       - 6379:6379
   haproxy:
     image: haproxy
-    container_name: haproxy
     volumes:
-      - ./haproxy/haproxy.cfg:/usr/local/etc/haproxy/haproxy.cfg
+     - ./haproxy/haproxy.cfg:/usr/local/etc/haproxy/haproxy.cfg
     links:
-      - message
-      - message2
-      - message3
+     - message1
+     - message2
+     - message3
+    depends_on:
+     - message1
+     - message2
+     - message3
     ports:
-      - "80:80"
+     - "80:80"
