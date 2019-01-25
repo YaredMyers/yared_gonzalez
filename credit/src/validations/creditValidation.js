@@ -44,7 +44,7 @@ let checkCredit = function(job) {
 
       let checkMyCabiCredit = {
         type: "Check my Credit",
-        msgID: msgID,
+        msgID: job.data.msgID,
         message: job.data,
         status: "STATUS: NO"
       }
