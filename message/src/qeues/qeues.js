@@ -37,14 +37,13 @@ messageQueue.process(function(job, done) {
     
     return breaker.fire(destination, body)
     .then(resp => {
-      // console.log(job.data, "**********")
-      // console.log("ENTRA EN STAT OK")
-      // console.log(msgID)
+      console.log(resp.response, "RESP")
       let status = "STATUS: OK";
       return saveMsg(msgID, status);
     })
     .catch(e => {
       let status;
+      console.log(e.response, "El DEL CATCH")
       if (e.response === undefined) {
         return status = "STATUS: TIMEOUT";
       } else {
