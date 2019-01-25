@@ -2,11 +2,16 @@ const circuitBreaker = require("opossum");
 const clientMessageApp = require("./clientMessageApp");
 
 const options = {
-  timeout: 3000, // If our function takes longer than 3 seconds, trigger a failure
-  errorThresholdPercentage: 50, // When 50% of requests fail, trip the circuit
-  resetTimeout: 30000 // After 30 seconds, try again.
+  timeout: 3000, 
+  errorThresholdPercentage: 50, 
+  resetTimeout: 30000 
 };
 const breaker = circuitBreaker(clientMessageApp, options);
+
+breaker.on('Successfully', (result) =>   console.log('!!!!!!!!!!!!!!!!!!!!!!!!SUCCESSFULLY!!!!!!!!!!!!!!!!!!!!!!!!'))
+breaker.on('Timeout', (result) => console.log('!!!!!!!!!!!!!!!!!!!!!!!!TIMEOUT!!!!!!!!!!!!!!!!!!!!!!!!'))
+
+
 
 
 module.exports = breaker;

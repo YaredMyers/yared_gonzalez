@@ -9,8 +9,8 @@ const Queue = require("bull");
 const clientMessageApp = require('../messageAppAxios/clientMessageApp');
 const saveMsg = require('../client/msgCreation');
 //creo la cola:
-const messageQueue = new Queue("messageQueue", 'yared_gonzalez_redis_1:6379');
-const creditQueue = new Queue("creditQueue", 'yared_gonzalez_redis_1:6379'); //addToMyCreditQueue
+const messageQueue = new Queue("messageQueue", 'redis://yared_gonzalez_redis_1:6379');
+const creditQueue = new Queue("creditQueue", 'redis://yared_gonzalez_redis_1:6379'); //addToMyCreditQueue
 const uuidv4 = require("uuid/v4");
 const breaker = require('../messageAppAxios/circuitBreaker')
 
