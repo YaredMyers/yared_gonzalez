@@ -10,6 +10,7 @@ const breaker = circuitBreaker(clientMessageApp, options);
 
 breaker.on('success', (result) =>   console.log('!!!!!!!!!!!!!!!!!!!!!!!!SUCCESSFULLY!!!!!!!!!!!!!!!!!!!!!!!!'))
 breaker.on('timeout', (result) => console.log('!!!!!!!!!!!!!!!!!!!!!!!!TIMEOUT!!!!!!!!!!!!!!!!!!!!!!!!'))
+breaker.on('reject', (result) => console.log('!!!!!!!!!!!!!!!!!!!!!!!!REJECT!!!!!!!!!!!!!!!!!!!!!!!!'))
 
 
 

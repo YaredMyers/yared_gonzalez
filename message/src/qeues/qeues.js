@@ -14,13 +14,9 @@ const creditQueue = new Queue("creditQueue", 'redis://yared_gonzalez_redis_1:637
 const uuidv4 = require("uuid/v4");
 const breaker = require('../messageAppAxios/circuitBreaker')
 
-// console.log("entra en queues 3.1")
 
 messageQueue.process(function(job, done) {
   // console.log("entra en queues 3.2 process")
-  
-  // console.log(job.data.type)
-  // console.log(job.data.statusCredit)
   
   if (job.data.type === "Check my Credit" && job.data.status === "STATUS: NO") {
     console.log("no hay credito")
@@ -37,17 +33,17 @@ messageQueue.process(function(job, done) {
     
     return breaker.fire(destination, body)
     .then(resp => {
-      console.log(resp.response, "RESP")
-      let status = "STATUS: OK";
+      console.log(resp, "RESP EN COLA")
+      let status = resp;
       return saveMsg(msgID, status);
     })
     .catch(e => {
       let status;
-      console.log(e.response, "El DEL CATCH")
+      console.log(e.message, "El DEL CATCH")
       if (e.response === undefined) {
-        return status = "STATUS: TIMEOUT";
+        return status = e;
       } else {
-        return status = "STATUS: NO";
+        return status = e;
       }
       // console.log(job.data, "dentro process")
 
@@ -59,10 +55,6 @@ messageQueue.process(function(job, done) {
 console.log("no enviado")
 
   }
-
-
-
-
 
 // let addToMyQueue = function(req, res, next) {
 //   const msgID = uuidv4();
