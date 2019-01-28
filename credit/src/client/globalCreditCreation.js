@@ -40,10 +40,6 @@ let saveCredit = function(amount, response) {
                           console.log("Error GUARDANDO LA SEGUNDA");
                         });
                     } else {
-                      ///// YA FINAL
-
-                      /////////////////// ULTIMA PRUEBA
-
                       var CreditReplica = CabiCredit("replica");
                       var myCredit = new CreditReplica({ amount });
 
@@ -62,8 +58,6 @@ let saveCredit = function(amount, response) {
                   .catch(error => {
                     console.log(error);
                   });
-
-                /////////////
               })
               .catch(credit => {
                 console.log("Error adding credit");
@@ -75,12 +69,11 @@ let saveCredit = function(amount, response) {
                 { amount: credit[0].amount + amount }
               )
               .then(credit => {
-                // console.log(credit)
                 console.log("Credit updated!");
               })
               .catch(credit => {
                 console.log("Error updating credit");
-              }); /////// AQUI EL PUTO REPLICA
+              });
 
             CabiCredit("replica")
               .find({})
@@ -99,16 +92,11 @@ let saveCredit = function(amount, response) {
                   });
               })
               .catch();
-            ///////
-
-            //////////
           }
         })
         .catch(error => {
           console.log(error);
         });
-
-      /////////////
     } else {
       console.log("One of your DBs is down, we cannot save your money");
     }

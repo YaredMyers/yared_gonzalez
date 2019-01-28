@@ -1,11 +1,10 @@
 const CabiMsg = require("../models/CabiMsg");
 const saveMsg = require("../client/msgCreation");
 const clientMessageApp = require("../messageAppAxios/clientMessageApp");
-// const payCredit = require("../../../credit/src/validations/payCredit");
-const pendingMessageSave = require('../client/PendingMsg')
+const pendingMessageSave = require("../client/PendingMsg");
 const uuidv4 = require("uuid/v4");
 
-const {creditQueue} = require('../qeues/qeues');
+const { creditQueue } = require("../qeues/qeues");
 
 let fieldsValidation = function(request, response, next) {
   const { destination, body } = request.body;
@@ -22,26 +21,57 @@ let fieldsValidation = function(request, response, next) {
     response.status(400);
     response.send("You only can use 30 characters or less");
   } else {
-    // console.log("entra en validations 2")
+    if (qeuesLenght(recoverSistem, response)) {
+      const msgID = uuidv4();
 
-    const msgID = uuidv4();
+      const msgObj = {
+        type: "Check available credit",
+        msgID: msgID,
+        destination: request.body.destination,
+        body: request.body.body,
+        status: "STATUS: OK"
+      };
 
-    const msgObj = {
-    type: "Check available credit",
-    msgID: msgID,
-    destination: request.body.destination,
-    body: request.body.body,
-    status: "STATUS: OK"
-  }
-
-  pendingMessageSave(msgObj).then(()=>{
-    creditQueue.add(msgObj)
-    response.send(`processing your message ${msgObj.msgID}`)
-  })
-
-    // addToMyQueue(request, response);
+      pendingMessageSave(msgObj).then(() => {
+        creditQueue.add(msgObj);
+        response.send(`processing your message ${msgObj.msgID}`);
+      });
+    } else {
+      response.send("Many conects, try again in a few minutes");
+    }
   }
 };
 
-module.exports = fieldsValidation;
+let recoverSistem = false;
 
+let qeuesLenght = function(recoverSistem, response) {
+  return creditQueue.count().then(resp => {
+    console.log(resp);
+    if (recoverSistem === false) {
+      if (resp > 10) {
+        recoverSistem = true;
+        response.send("Too much messages in qeue");
+        return false;
+      }
+      if (resp < 10) {
+        return true;
+      }
+      {
+        if (recovery === true) {
+          if (resp < 5) {
+            recoverSistem = false;
+            return true;
+          }
+          if (resp > 5) {
+            response.send(
+              "So much requests, try again in a few minutes please"
+            );
+            return false;
+          }
+        }
+      }
+    }
+  });
+};
+
+module.exports = fieldsValidation;

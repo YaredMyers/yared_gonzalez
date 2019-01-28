@@ -13,7 +13,7 @@ let payCredit = function() {
         .then(credit => {
           console.log("Payed Primary!");
 
-         return CabiCredit("replica")
+          return CabiCredit("replica")
             .find({})
             .then(credit2 => {
               let CreditReplica = CabiCredit("replica");
@@ -38,7 +38,6 @@ let payCredit = function() {
             .catch(credit => {
               console.log("Didn't find any credit account on Replica!");
             });
-          ////////////
         })
         .catch(credit => {
           console.log("Error paying!");

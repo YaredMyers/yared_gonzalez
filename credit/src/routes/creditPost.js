@@ -1,6 +1,5 @@
 const express = require("express");
 const creditPost = express.Router();
-// const fieldsValidation = require("../../../message/src/validations/validations");
 const saveCredit = require("../client/globalCreditCreation");
 
 
