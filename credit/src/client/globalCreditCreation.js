@@ -1,13 +1,14 @@
 const CabiCredit = require("../models/CabiCredit");
 const isReplicaOnline = require("../../mongoDBModule2");
+const logger = require('../winston/logs');
 
 // backup
 
 let saveCredit = function(amount, response) {
   if (typeof amount !== "number") {
-    console.log("It has to be number");
+    logger.warning("It has to be number");
   } else if (amount === "") {
-    console.log("It has to be number");
+    logger.warning("It has to be number");
   } else {
     if (isReplicaOnline) {
       return CabiCredit("primary")
@@ -20,13 +21,12 @@ let saveCredit = function(amount, response) {
             myCredit
               .save()
               .then(credit => {
-                console.log("primeraguardada");
+                logger.info("primeraguardada");
 
                 ///////
                 return CabiCredit("replica")
                   .find({})
                   .then(credit => {
-                    console.log("entra");
                     if (credit.length === 0) {
                       var CreditReplic = CabiCredit("replica");
                       var myCredit = new CreditReplic({ amount });
@@ -34,10 +34,10 @@ let saveCredit = function(amount, response) {
                       myCredit
                         .save()
                         .then(credit => {
-                          console.log("Todo esta guardado ahora!");
+                          logger.info("Todo esta guardado ahora!");
                         })
                         .catch(credit => {
-                          console.log("Error GUARDANDO LA SEGUNDA");
+                          logger.info("Error GUARDANDO LA SEGUNDA");
                         });
                     } else {
                       var CreditReplica = CabiCredit("replica");
@@ -48,19 +48,19 @@ let saveCredit = function(amount, response) {
                         { amount: credit[0].amount + amount }
                       )
                         .then(credit => {
-                          console.log("Credit two updated!");
+                          logger.info("Credit two updated!");
                         })
                         .catch(credit => {
-                          console.log("Error updating credit");
+                          logger.info("Error updating credit");
                         });
                     }
                   })
                   .catch(error => {
-                    console.log(error);
+                    logger.error(error);
                   });
               })
               .catch(credit => {
-                console.log("Error adding credit");
+                logger.error("Error adding credit");
               });
           } else {
             CabiCredit("primary")
@@ -69,10 +69,10 @@ let saveCredit = function(amount, response) {
                 { amount: credit[0].amount + amount }
               )
               .then(credit => {
-                console.log("Credit updated!");
+                logger.info("Credit updated!");
               })
               .catch(credit => {
-                console.log("Error updating credit");
+                logger.error("Error updating credit");
               });
 
             CabiCredit("replica")
@@ -85,20 +85,20 @@ let saveCredit = function(amount, response) {
                   )
                   .then(credit => {
                     console.log(credit);
-                    console.log("Credit 2 updated!");
+                    logger.info("Credit 2 updated!");
                   })
                   .catch(credit => {
-                    console.log("Error updating credit");
+                    logger.error("Error updating credit");
                   });
               })
               .catch();
           }
         })
         .catch(error => {
-          console.log(error);
+          logger.error(error);
         });
     } else {
-      console.log("One of your DBs is down, we cannot save your money");
+      logger.info("One of your DBs is down, we cannot save your money");
     }
   }
 };

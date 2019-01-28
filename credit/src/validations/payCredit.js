@@ -1,4 +1,5 @@
 const CabiCredit = require("../models/CabiCredit");
+const logger = require('../winston/logs')
 
 let payCredit = function() {
   return CabiCredit("primary")
@@ -11,7 +12,7 @@ let payCredit = function() {
         { amount: credit[0].amount - 100 }
       )
         .then(credit => {
-          console.log("Payed Primary!");
+          logger.info("Payed Primary!");
 
           return CabiCredit("replica")
             .find({})
@@ -23,10 +24,10 @@ let payCredit = function() {
                 { amount: credit2[0].amount - 100 }
               )
                 .then(credit2 => {
-                  console.log("Payed Replica!");
+                  logger.info("Payed Replica!");
                 })
                 .catch(credit2 => {
-                  console.log("Error paying on Replica! Retry again");
+                  logger.error("Error paying on Replica! Retry again");
 
                   let CreditPrimary = CabiCredit("primary");
                   CreditPrimary.findOneAndUpdate(
@@ -36,15 +37,15 @@ let payCredit = function() {
                 });
             })
             .catch(credit => {
-              console.log("Didn't find any credit account on Replica!");
+              logger.info("Didn't find any credit account on Replica!");
             });
         })
         .catch(credit => {
-          console.log("Error paying!");
+          logger.error("Error paying!");
         });
     })
     .catch(credit => {
-      console.log("Didn't find any credit account!");
+      logger.info("Didn't find any credit account!");
     });
 };
 

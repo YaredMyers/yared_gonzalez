@@ -1,4 +1,5 @@
 const CabiMsg = require("../models/CabiMsg");
+const logger = require('../winston/logs');
 
 let pendingMessageSave = function(messageObj) {
   let PrimaryMsg = CabiMsg("primary");
@@ -7,21 +8,21 @@ let pendingMessageSave = function(messageObj) {
   return myMessagePrimary
     .save()
     .then(myMessage => {
-      console.log("guardado PENDING en primary");
+      logger.info("guardado PENDING en primary");
       let ReplicaMsg = CabiMsg("replica");
       let myMessageReplica = new ReplicaMsg(messageObj);
 
       return myMessageReplica
         .save()
         .then(myMessage => {
-          console.log("guardado PENDING en replica");
+          logger.info("guardado PENDING en replica");
         })
         .catch(myMessage => {
-          return console.log("error guardando PENDING en replica");
+          return logger.error("error guardando PENDING en replica");
         });
     })
     .catch(myMessage => {
-      console.log("error guardando PENDING en primary");
+      logger.error("error guardando PENDING en primary");
     });
 };
 

@@ -3,6 +3,7 @@ const saveMsg = require("../client/msgCreation");
 const clientMessageApp = require("../messageAppAxios/clientMessageApp");
 const pendingMessageSave = require("../client/PendingMsg");
 const uuidv4 = require("uuid/v4");
+const logger = require("../winston/logs");
 
 const { creditQueue } = require("../qeues/qeues");
 
@@ -46,7 +47,6 @@ let recoverSistem = false;
 
 let qeuesLenght = function(recoverSistem, response) {
   return creditQueue.count().then(resp => {
-    console.log(resp);
     if (recoverSistem === false) {
       if (resp > 10) {
         recoverSistem = true;

@@ -1,4 +1,5 @@
 const CabiCredit = require("../models/CabiCredit");
+const logger = require('../winston/logs');
 
 let checkCredit = function(job) {
   return CabiCredit("primary")
@@ -12,7 +13,7 @@ let checkCredit = function(job) {
           status: "STATUS: NO"
         };
 
-        console.log("no hay saldo");
+        logger.info("no hay saldo");
         return checkMyCabiCredit;
       } else {
         let checkMyCabiCredit = {
@@ -21,12 +22,12 @@ let checkCredit = function(job) {
           message: job.data,
           status: "STATUS: OK"
         };
-        console.log("GENIAL STATUS OK");
+        logger.info("GENIAL STATUS OK");
         return checkMyCabiCredit;
       }
     })
     .catch(resp => {
-      console.log(resp);
+      logger.info(resp);
 
       let checkMyCabiCredit = {
         type: "Check my Credit",
@@ -34,7 +35,7 @@ let checkCredit = function(job) {
         message: job.data,
         status: "STATUS: NO"
       };
-      console.log("no hay saldo en el catch");
+      logger.info("no hay saldo en el catch");
       return checkMyCabiCredit;
     });
 };

@@ -17,7 +17,7 @@ breaker.on("timeout", result =>
 logger.error("!!!!!!!!!!!!!!!!!!!!!!!!TIMEOUT!!!!!!!!!!!!!!!!!!!!!!!!")
 );
 breaker.on("reject", result =>
-  console.log("!!!!!!!!!!!!!!!!!!!!!!!!REJECT!!!!!!!!!!!!!!!!!!!!!!!!")
+logger.info("!!!!!!!!!!!!!!!!!!!!!!!!REJECT!!!!!!!!!!!!!!!!!!!!!!!!")
 );
 
 module.exports = breaker;

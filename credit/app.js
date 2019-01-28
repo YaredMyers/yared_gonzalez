@@ -2,6 +2,7 @@ require("dotenv").config();
 const express = require("express");
 const app = express();
 const bodyParser = require("body-parser");
+const logger = require('./src/winston/logs');
 
 const creditPost = require("./src/routes/creditPost");
 const myPORT = process.env.PORT;
@@ -15,5 +16,5 @@ app.use("/", creditPost);
 app.use("/", getCreditRoute);
 
 app.listen(9017, () => {
-  console.log("Hola, Mundo!");
+  logger.info("Hola, Mundo!");
 });

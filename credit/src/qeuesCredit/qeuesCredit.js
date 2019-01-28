@@ -1,5 +1,5 @@
 const Queue = require("bull");
-
+const logger = require('../winston/logs');
 const checkCredit = require("../validations/creditValidation");
 
 const payCredit = require("../validations/payCredit");
@@ -14,14 +14,11 @@ const messageQueue = new Queue(
 
 const uuidv4 = require("uuid/v4");
 
-console.log("UNGAUNGA1");
 creditQueue.process(function(job, done) {
-  console.log("UNGAUNGA2");
 
   return checkCredit(job).then(checkMyCabiCredit => {
     if (checkMyCabiCredit.status === "STATUS: OK") {
-      console.log("UNGAUNGA1");
-      console.log(checkMyCabiCredit, "CHECKMYCABICREDIT");
+      logger.info(checkMyCabiCredit, "CHECKMYCABICREDIT");
       return payCredit()
         .then(() => messageQueue.add(checkMyCabiCredit))
         .then(done);

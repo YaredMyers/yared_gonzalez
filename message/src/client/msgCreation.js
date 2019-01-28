@@ -1,17 +1,17 @@
 const CabiMsg = require("../models/CabiMsg");
+const logger = require('../winston/logs');
 
 let saveMsg = function(msgID, status) {
   let MessagePrimary = CabiMsg("primary");
-console.log(msgID)
-console.log(status)
+logger.info(msgID)
+logger.info(status)
   return MessagePrimary.findOneAndUpdate(
     { msgID: msgID },
     { status: status },
     { new: true }
   )
     .then(messageP => {
-      console.log(messageP);
-      console.log("GUAY");
+      logger.info(messageP);
       let MessageReplica = CabiMsg("replica");
       return MessageReplica.findOneAndUpdate(
         { msgID: msgID },
@@ -19,16 +19,16 @@ console.log(status)
         { new: true }
       )
         .then(messageP => {
-          console.log(messageP);
-          console.log("PENDING ---> OK, TIMEOUT, ERROR");
+          logger.info(messageP);
+          logger.info("PENDING ---> OK, TIMEOUT, ERROR");
         })
         .catch(error => {
-          return console.log(error);
+          return logger.error(error);
         });
     })
     .catch(error => {
-      console.log(error);
-      console.log("Error Primary: PENDING ---> OK, TIMEOUT, ERROR");
+      logger.error(error);
+      logger.error("Error Primary: PENDING ---> OK, TIMEOUT, ERROR");
     });
 };
 

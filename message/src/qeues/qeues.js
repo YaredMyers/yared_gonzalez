@@ -11,10 +11,11 @@ const creditQueue = new Queue(
 ); //addToMyCreditQueue
 const uuidv4 = require("uuid/v4");
 const breaker = require("../messageAppAxios/circuitBreaker");
+const logger = require('../winston/logs');
 
 messageQueue.process(function(job, done) {
   if (job.data.type === "Check my Credit" && job.data.status === "STATUS: NO") {
-    console.log("no hay credito");
+    logger.info("no hay credito");
     done();
   } else if (
     job.data.type === "Check my Credit" &&
@@ -32,7 +33,7 @@ messageQueue.process(function(job, done) {
       })
       .catch(e => {
         let status;
-        console.log(e.message, "EN CATCH");
+        logger.info(e.message, "EN CATCH");
         if (e.response === undefined) {
           return (status = e);
         } else {
@@ -42,7 +43,7 @@ messageQueue.process(function(job, done) {
         saveMsg(msgID, status).then(() => done());
       });
   } else {
-    console.log("no enviado");
+    logger.info("no enviado");
   }
 });
 
