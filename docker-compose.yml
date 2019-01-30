@@ -114,7 +114,7 @@ services:
   grafana:
     image: grafana/grafana:latest
     ports:
-    - "3006:3006"
+    - "3006:3000"
 
   prometheus:
     image: prom/prometheus:0.18.0
